@@ -33,12 +33,6 @@ Target "Build" (fun _ ->
     |> Log "AppBuild-Output: "
 )
 
-Target "Deploy" (fun _ ->
-    !! (buildDir + "/**/*.*")
-    -- "*.zip"
-    |> Zip buildDir (deployDir + "ApplicationName." + version + ".zip")
-)
-
 let testDlls = !! (testDir + "/*Test.dll")
 Target "BuildTest" (fun _ ->
     MSBuildDebug testDir "Build" testReferences
@@ -57,9 +51,11 @@ Target "Tests" (fun _ ->
 // Build order
 "Clean"
     ==> "Build"
+
+"Clean"
+    ==> "Build"
     ==> "BuildTest"
     ==> "Tests"
-    ==> "Deploy"
 
 // start build
 // RunTargetOrDefault "Build"
