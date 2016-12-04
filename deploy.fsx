@@ -12,12 +12,11 @@ Environment.CurrentDirectory <- __SOURCE_DIRECTORY__
   
 // Step 2. Use the packages
   
-#r "packages/Suave/lib/net40/Suave.dll"
+#r @"packages/Suave/lib/net40/Suave.dll"
   
 open Suave // always open suave
-open Suave.Http.Successful // for OK-result
+open Suave.Successful // for OK-result
 open Suave.Web // for config
-open Suave.Types
 open System.Net
  
 let port = Sockets.Port.Parse <| getBuildParamOrDefault "port" "8083"
@@ -27,4 +26,4 @@ let serverConfig =
        bindings = [ HttpBinding.mk HTTP IPAddress.Loopback port ]
     }
   
-startWebServer defaultConfig (OK "Hello World!")
+startWebServer defaultConfig (OK "Hello World! MGr")
