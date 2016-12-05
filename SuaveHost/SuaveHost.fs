@@ -5,7 +5,8 @@ open System
 open System.Net
 
 [<EntryPoint>]
-let main [| port |] =
+let main args =
+    let port = args.[0]
     let config =
         { defaultConfig with
               bindings = [ HttpBinding.mk HTTP IPAddress.Loopback (uint16 port) ]
