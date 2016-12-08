@@ -24,3 +24,5 @@ Target "Deploy" kuduSync
 // Set up dependencies
 "Build"
 ==> "Deploy"
+
+RunTargetOrDefault "Deploy"
