@@ -14,4 +14,4 @@ let main (args : string[]) =
     // rest of application
     startWebServer config (OK "Hello World!")
 
-    0 // main return value?
+    //0 // main return value?
