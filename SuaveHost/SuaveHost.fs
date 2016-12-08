@@ -13,6 +13,6 @@ let main (args : string[]) =
               listenTimeout = TimeSpan.FromMilliseconds 3000. }
 
     // rest of application
-    startWebServer config (OK "Hello World!")
+    startWebServer config (OK "Hello World! MGr")
 
     0 // main return value?
