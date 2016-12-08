@@ -9,7 +9,9 @@ let appReferences  =
     !! "/**/*.csproj"
     ++ "/**/*.fsproj"
 
-let buildDir  = "./build/"
+Target "Copy" (fun _ ->
+    Copy deploymentTemp ["web.config";]
+)
 
 // Build and stage the web application
 Target "Build" (fun _ ->
@@ -23,6 +25,7 @@ Target "Deploy" kuduSync
 
 // Set up dependencies
 "Build"
+==> "Copy"
 ==> "Deploy"
 
 RunTargetOrDefault "Deploy"
