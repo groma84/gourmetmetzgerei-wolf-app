@@ -14,7 +14,7 @@ let buildDir  = "./build/"
 // Build and stage the web application
 Target "Build" (fun _ ->
     // compile all projects below src/app/
-    MSBuildDebug buildDir "Build" appReferences
+    MSBuildDebug deploymentTemp "Build" appReferences
     |> Log "AppBuild-Output: "
 )
 
