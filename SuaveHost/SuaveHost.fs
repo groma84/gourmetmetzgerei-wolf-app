@@ -4,6 +4,7 @@ open Suave.Web             // for config
 open System
 open System.Net
 
+[<EntryPoint>]
 let main (args : string[]) =
     let port = args.[0]
     let config =
@@ -14,4 +15,4 @@ let main (args : string[]) =
     // rest of application
     startWebServer config (OK "Hello World!")
 
-    //0 // main return value?
+    0 // main return value?
