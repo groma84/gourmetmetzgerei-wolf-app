@@ -10,7 +10,7 @@ let appReferences  =
     ++ "/**/*.fsproj"
 
 Target "Copy" (fun _ ->
-    Copy deploymentTemp ["/web.config";]
+    CopyFile deploymentTemp "web.config"
 )
 
 // Build and stage the web application
