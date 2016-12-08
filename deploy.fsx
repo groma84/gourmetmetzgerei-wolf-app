@@ -1,29 +1,26 @@
-// --------------------------------------------------------------------------------------
-// FAKE deploy script
-// --------------------------------------------------------------------------------------
- 
-#r @"packages/FAKE/tools/FakeLib.dll"
- 
-open System
-open System.IO
+// include Fake libs
+#r "./packages/FAKE/tools/FakeLib.dll"
+
 open Fake
-  
-Environment.CurrentDirectory <- __SOURCE_DIRECTORY__
-  
-// Step 2. Use the packages
-  
-#r @"packages/Suave/lib/net40/Suave.dll"
-  
-open Suave // always open suave
-open Suave.Successful // for OK-result
-open Suave.Web // for config
-open System.Net
- 
-let port = Sockets.Port.Parse <| getBuildParamOrDefault "port" "8083"
- 
-let serverConfig = 
-    { defaultConfig with
-       bindings = [ HttpBinding.mk HTTP IPAddress.Loopback port ]
-    }
-  
-startWebServer defaultConfig (OK "Hello World! MGr")
+open Fake.Azure.Kudu
+
+
+let appReferences  =
+    !! "/**/*.csproj"
+    ++ "/**/*.fsproj"
+
+let buildDir  = "./build/"
+
+// Build and stage the web application
+Target "Build" (fun _ ->
+    // compile all projects below src/app/
+    MSBuildDebug buildDir "Build" appReferences
+    |> Log "AppBuild-Output: "
+)
+
+// Promote all staged files into the real application
+Target "Deploy" kuduSync
+
+// Set up dependencies
+"Build"
+==> "Deploy"

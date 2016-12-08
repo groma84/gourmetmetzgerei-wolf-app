@@ -4,8 +4,7 @@ open Suave.Web             // for config
 open System
 open System.Net
 
-[<EntryPoint>]
-let main args =
+let main (args : string[]) =
     let port = args.[0]
     let config =
         { defaultConfig with
