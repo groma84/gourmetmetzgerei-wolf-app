@@ -62,6 +62,7 @@ Target "CopyKudu" (fun _ ->
     let copyToTempDir = CopyFile deploymentTemp
     copyToTempDir "web.config"
     copyToTempDir "SuaveHost/config.yaml"
+    CopyFile (deploymentTemp + "/SuaveHost.exe.config") "SuaveHost/app.config"
 )
 
 // Promote all staged files into the real application
