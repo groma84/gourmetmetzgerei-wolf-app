@@ -1,10 +1,10 @@
 module Server
 
-open FSharp.Data
-
-let download url =   
-    try
-        Some(Http.RequestString(url))
-    with
-        | _ -> None   
-
+let getTagesmenue url =
+    let html = Downloader.download url
+    let tagesmenue = 
+        match html with
+        | Some x -> Some(Parser.parseMittagsmenue x)
+        | None -> None
+      
+    tagesmenue

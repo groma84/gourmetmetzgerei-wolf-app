@@ -48,15 +48,22 @@ Target "Tests" (fun _ ->
                 })
 )
 
+Target "CopyConfigs" (fun _ ->
+    let copyToBuildDir = CopyFile buildDir 
+    copyToBuildDir "SuaveHost/config.yaml"
+)
+
 // Build order
 "Clean"
     ==> "Build"
+    ==> "CopyConfigs"
 
 "Clean"
     ==> "Build"
     ==> "BuildTest"
+    ==> "CopyConfigs"
     ==> "Tests"
 
 // start build
 RunTargetOrDefault "Build"
-// RunTargetOrDefault "Tests"
+//RunTargetOrDefault "Tests"
