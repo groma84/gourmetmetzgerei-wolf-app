@@ -37,7 +37,9 @@ let replaceCommaWithDot (str : string) =
 
 // Define your library scripting code here
 //let results = HtmlDocument.Load(@"http://www.gourmetmetzgerei-wolf.de/de/mittagsmenue")
-let results = HtmlDocument.Load(@"D:\git-repos\groma84@github\gourmetmetzgerei-wolf-app\Server\mittagsmenue.html")
+//let results = HtmlDocument.Load(@"D:\git-repos\groma84@github\gourmetmetzgerei-wolf-app\Server\mittagsmenue.html")
+let results = HtmlDocument.Load(@"E:\git\gourmetmetzgerei-wolf-app\Server\mittagsmenue.html")
+
 
 let divs = results.Descendants ["div"]
 let tage = divs |> Seq.filter(fun node -> 

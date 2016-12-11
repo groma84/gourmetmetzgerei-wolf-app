@@ -1,3 +1,6 @@
 FSharp.Core
 Suave
 FSharp.Configuration
+Newtonsoft.Json
+
+File:ErrorHandling.fs .

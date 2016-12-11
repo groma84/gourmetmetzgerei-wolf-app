@@ -1,10 +1,9 @@
 module Server
 
-let getTagesmenue url =
-    let html = Downloader.download url
-    let tagesmenue = 
-        match html with
-        | Some x -> Some(Parser.parseMittagsmenue x)
-        | None -> None
-      
-    tagesmenue
+open Railway
+open Errors
+
+let getTagesmenue (url) : Result<Parser.Woche, Error> =
+    Downloader.download url
+    >>= Parser.parseMittagsmenue
+    

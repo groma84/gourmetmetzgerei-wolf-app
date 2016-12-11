@@ -1,6 +1,8 @@
 module Parser
 
 open FSharp.Data
+open Railway
+open Errors
 
 type Preis = double
 type Gericht = string
@@ -15,6 +17,11 @@ type Tagesmenu = {
     Wochentag: Wochentag;
     Gerichte: GerichtMitPreis list;
 }
+
+type Woche = {
+    Tagesmenues: Tagesmenu list;
+}
+
 
 let parseMittagsmenue (html : string) =
     let extractInnertext (htmlNode : HtmlNode) =
@@ -54,15 +61,19 @@ let parseMittagsmenue (html : string) =
                 )
             |> List.ofSeq
 
-    let document = HtmlDocument.Parse html
-    let tagesmenue = 
-        document.Descendants ["div"]
-        |> Seq.filter(fun node -> node.HasClass("day"))
-        |> Seq.map(fun tagesNode ->
-            {
-                Wochentag = getWochentag tagesNode;
-                Gerichte = getGerichte tagesNode;
-            }
-        )
+    try
+        let document = HtmlDocument.Parse html
+        let tagesmenues = 
+            document.Descendants ["div"]
+            |> Seq.filter(fun node -> node.HasClass("day"))
+            |> Seq.map(fun tagesNode ->
+                {
+                    Wochentag = getWochentag tagesNode;
+                    Gerichte = getGerichte tagesNode;
+                }
+            )
+            |> List.ofSeq
 
-    tagesmenue
+        succeed { Tagesmenues = tagesmenues }
+    with
+        | ex -> fail (Error.ParsingTagesmenueFailed ex)
