@@ -27,10 +27,11 @@ Target "Clean" (fun _ ->
     CleanDirs [buildDir; testDir; deploymentTemp;] 
 )
 
-Target "Build" (fun _ ->
+Target "BuildLocal" (fun _ ->
     MSBuildDebug buildDir "Build" appReferences
     |> Log "AppBuild-Output buildDir: "
-
+)
+Target "BuildKudu" (fun _ ->
     MSBuildDebug deploymentTemp "Build" appReferences
     |> Log "AppBuild-Output deploymentTemp: "
 )
@@ -40,7 +41,7 @@ Target "BuildTest" (fun _ ->
     MSBuildDebug testDir "Build" testReferences
         |> Log "TestBuild-Output: "
 )
-Target "Tests" (fun _ ->
+Target "RunTests" (fun _ ->
     testDlls
         |> NUnit3  (fun p -> 
             {p with
@@ -50,18 +51,17 @@ Target "Tests" (fun _ ->
                 })
 )
 
-Target "Copy" (fun _ ->
-    let copyToTempDir = CopyFile deploymentTemp
-    let copyToBuildDir = CopyFile buildDir 
-    
-    copyToTempDir "web.config"
-    copyToBuildDir "web.config"
-
-    copyToTempDir "SuaveHost/config.yaml"
+Target "CopyLocal" (fun _ ->
+    let copyToBuildDir = CopyFile buildDir   
     copyToBuildDir "SuaveHost/config.yaml"
 
     CopyFile (buildDir + "/SuaveHost.exe.config") "SuaveHost/app.config"
-    CopyFile (deploymentTemp + "/SuaveHost.exe.config") "SuaveHost/app.config"
+)
+
+Target "CopyKudu" (fun _ ->
+    let copyToTempDir = CopyFile deploymentTemp
+    copyToTempDir "web.config"
+    copyToTempDir "SuaveHost/config.yaml"
 )
 
 // Promote all staged files into the real application
@@ -69,16 +69,16 @@ Target "Deploy" kuduSync
 
 // Build order
 "Clean"
-    ==> "Build"
-    ==> "Copy"
+    ==> "BuildLocal"
+    ==> "CopyLocal"
     ==> "BuildTest"
-    ==> "Tests"
+    ==> "RunTests"
 
 // Set up dependencies
 "Clean"
-    ==>"Build"
-    ==> "Copy"
+    ==> "BuildKudu"
+    ==> "CopyKudu"
     ==> "Deploy"
 
-RunTargetOrDefault "Copy"
-//RunTargetOrDefault "Deploy"
+// RunTargetOrDefault "CopyLocal"
+RunTargetOrDefault "Deploy"
