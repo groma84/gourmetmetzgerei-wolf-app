@@ -3,10 +3,10 @@
 
 open Fake
 open Fake.Testing
+open Fake.Azure.Kudu
 
 // Directories
 let buildDir  = "./build/"
-let deployDir = "./deploy/"
 let testDir = "./test/"
 
 
@@ -24,13 +24,15 @@ let version = "0.1"  // or retrieve from CI server
 
 // Targets
 Target "Clean" (fun _ ->
-    CleanDirs [buildDir; deployDir; testDir]
+    CleanDirs [buildDir; testDir; deploymentTemp;] 
 )
 
 Target "Build" (fun _ ->
-    // compile all projects below src/app/
     MSBuildDebug buildDir "Build" appReferences
-    |> Log "AppBuild-Output: "
+    |> Log "AppBuild-Output buildDir: "
+
+    MSBuildDebug deploymentTemp "Build" appReferences
+    |> Log "AppBuild-Output deploymentTemp: "
 )
 
 let testDlls = !! (testDir + "/*Test.dll")
@@ -48,20 +50,35 @@ Target "Tests" (fun _ ->
                 })
 )
 
-Target "CopyConfigs" (fun _ ->
+Target "Copy" (fun _ ->
+    let copyToTempDir = CopyFile deploymentTemp
     let copyToBuildDir = CopyFile buildDir 
+    
+    copyToTempDir "web.config"
+    copyToBuildDir "web.config"
+
+    copyToTempDir "SuaveHost/config.yaml"
     copyToBuildDir "SuaveHost/config.yaml"
 
     CopyFile (buildDir + "/SuaveHost.exe.config") "SuaveHost/app.config"
+    CopyFile (deploymentTemp + "/SuaveHost.exe.config") "SuaveHost/app.config"
 )
+
+// Promote all staged files into the real application
+Target "Deploy" kuduSync
 
 // Build order
 "Clean"
     ==> "Build"
-    ==> "CopyConfigs"
+    ==> "Copy"
     ==> "BuildTest"
     ==> "Tests"
 
-// start build
-RunTargetOrDefault "CopyConfigs"
-//RunTargetOrDefault "Tests"
+// Set up dependencies
+"Clean"
+    ==>"Build"
+    ==> "Copy"
+    ==> "Deploy"
+
+RunTargetOrDefault "Copy"
+//RunTargetOrDefault "Deploy"

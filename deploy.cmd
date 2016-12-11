@@ -10,7 +10,7 @@ setlocal enabledelayedexpansion
 .paket\paket.exe restore
 
 :: Start main build script
-packages\FAKE\tools\FAKE.exe deploy.fsx
+packages\FAKE\tools\FAKE.exe build.fsx Deploy
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
