@@ -28,7 +28,7 @@ let (>>=) x f =
     bind f x
 
 // compose two switches into another switch
-let (>=>) s1 s2 = 
+let compose s1 s2 = 
     s1 >> bind s2
 
 // convert a one-track function into a switch

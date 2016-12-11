@@ -13,9 +13,15 @@ open System
 open System.Net
 
 open Server
-
+open Railway
 
 type Config = YamlConfig<"./config.yaml">
+
+type ResultDto<'a, 'b> = 
+    {
+        Data: 'a;
+        Error: 'b;
+    }
 
 [<EntryPoint>]
 let main (args : string[]) =
@@ -27,26 +33,23 @@ let main (args : string[]) =
 
     let config = Config()
 
-   // let tm = 
-  //  let result = (Server.getTagesmenue config.Urls.Mittagsmenue.AbsoluteUri)
-   //     match result with
-    //        | Success s -> "OK"
-    //        | Failure f -> "FAIL"
-
-    let asJson (input) : WebPart =   
+    let toJson input =     
         let jsonSerializerSettings = new JsonSerializerSettings()
-        jsonSerializerSettings.ContractResolver <- new CamelCasePropertyNamesContractResolver()
+        jsonSerializerSettings.ContractResolver <- new CamelCasePropertyNamesContractResolver()   
         JsonConvert.SerializeObject(input, jsonSerializerSettings)
+        
+    let toResultDto (input: Result<'a, 'b>) = 
+        match input with
+            | Success s -> { Data = s; Error = ""; } |> toJson
+            | Failure f -> { Data = ""; Error = f; }|> toJson;
         |> OK
         >=> Writers.setMimeType "application/json; charset=utf-8"
-
-  
-
+          
     let app : WebPart =
         choose
             [ 
                 path "/" >=> OK "Hello World! MGr mit Routing";
-                path "/tagesmenue" >=> asJson (Server.getTagesmenue config.Urls.Mittagsmenue.AbsoluteUri);
+                path "/tagesmenue" >=> toResultDto (Server.getTagesmenue config.Urls.Mittagsmenue.AbsoluteUri);
             ]
 
     // rest of application
