@@ -15,7 +15,7 @@ open System.Net
 open Server
 open Railway
 
-type Config = YamlConfig<"./config.yaml">
+type Config = YamlConfig<"config.yaml">
 
 type ResultDto<'a, 'b> = 
     {
