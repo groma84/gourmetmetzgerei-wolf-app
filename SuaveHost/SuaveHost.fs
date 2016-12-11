@@ -53,6 +53,6 @@ let main (args : string[]) =
             ]
 
     // rest of application
-    startWebServer suaveConfig (OK "ok ok")
+    startWebServer suaveConfig app
 
     0 // main return value?
