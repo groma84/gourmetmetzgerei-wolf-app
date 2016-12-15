@@ -1,7 +1,7 @@
 module Parser
 
 open FSharp.Data
-open Railway
+open Chessie.ErrorHandling
 open Errors
 
 type Preis = double
@@ -74,6 +74,6 @@ let parseMittagsmenue (html : string) =
             )
             |> List.ofSeq
 
-        succeed { Tagesmenues = tagesmenues }
+        ok { Tagesmenues = tagesmenues }
     with
         | ex -> fail (Error.ParsingTagesmenueFailed ex)

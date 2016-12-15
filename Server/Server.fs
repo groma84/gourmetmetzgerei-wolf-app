@@ -1,9 +1,9 @@
 module Server
 
-open Railway
+open Chessie.ErrorHandling
 open Errors
 
-let getTagesmenue (url) : Result<Parser.Woche, Error> =
+let getTagesmenue (url) =
     Downloader.download url
     >>= Parser.parseMittagsmenue
     

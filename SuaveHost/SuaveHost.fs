@@ -13,15 +13,8 @@ open System
 open System.Net
 
 open Server
-open Railway
 
 type Config = YamlConfig<"config.yaml">
-
-type ResultDto<'a, 'b> = 
-    {
-        Data: 'a;
-        Error: 'b;
-    }
 
 [<EntryPoint>]
 let main (args : string[]) =
@@ -37,19 +30,15 @@ let main (args : string[]) =
         let jsonSerializerSettings = new JsonSerializerSettings()
         jsonSerializerSettings.ContractResolver <- new CamelCasePropertyNamesContractResolver()   
         JsonConvert.SerializeObject(input, jsonSerializerSettings)
-        
-    let toResultDto (input: Result<'a, 'b>) = 
-        match input with
-            | Success s -> { Data = s; Error = ""; } |> toJson
-            | Failure f -> { Data = ""; Error = f; }|> toJson;
-        |> OK
-        >=> Writers.setMimeType "application/json; charset=utf-8"
-          
+            
+    let toOutput (input) = 
+        input |> toJson |> OK >=> Writers.setMimeType "application/json; charset=utf-8"
+              
     let app : WebPart =
         choose
             [ 
                 path "/" >=> OK "Hello World! MGr mit Routing";
-                path "/tagesmenue" >=> toResultDto (Server.getTagesmenue config.Urls.Mittagsmenue.AbsoluteUri);
+                path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Urls.Mittagsmenue.AbsoluteUri |> toOutput))
             ]
 
     // rest of application
