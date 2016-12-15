@@ -1,5 +1,5 @@
 # NEXT
-1) Parsing Angebotsseite
+1) Parsing Angebotsseite (http://www.gourmetmetzgerei-wolf.de/de/angebote)
 
 # LATER
 2) Einbindung SQLite
