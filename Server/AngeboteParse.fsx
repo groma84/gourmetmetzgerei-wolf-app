@@ -17,49 +17,18 @@ let splitAtSpace (str : string) =
 let replaceCommaWithDot (str : string) =
     str.Replace(",", ".")
 
+let (|Regex|_|) pattern input =
+        let m = Regex.Match(input, pattern)
+        if m.Success then Some(List.tail [ for g in m.Groups -> g.Value ])
+        else None
 
 
 let limitToNumbers input =
-    let castMatches (mc:MatchCollection) =        
-        // mc
-        // |> Option.map Seq.cast<Match> 
-
-        mc
-        |> Seq.cast<Match>
-        |> Seq.map (fun m -> if isNull m then None else Some m)
-
-
-        // |> Seq.map(fun m -> 
-        //    match m with
-        //    | :? m as Match -> Some (m :?> Match) 
-        //    | _ -> None
-        //    ) 
-
-    let evaluateMatches (matchCollection:MatchCollection) =
-        if matchCollection.Count > 0 then
-            Some matchCollection
-        else
-            None
-
-    let parseMatches (regexMatches: Match option seq) =
-        regexMatches
-        |> Seq.map (fun ms -> 
-            match ms with
-            | Some m -> if m.Success then Some(m.Value) else None
-            | None -> None
-        )
-
-    let result = Regex.Matches(input, "([0-9]+)") 
-                    |> evaluateMatches
-                    |> Option.map castMatches
-                    |> Option.map parseMatches
-
-    match result with
-    | Some x -> x
-    | None -> Seq.ofList [ Option<string>.None ]
-    
+    let wert = match input with
+                | Regex "([0-9]+)" [num] -> num |> int |> Option.Some
+                | _ -> None 
+    wert
                         
-
 // Define your library scripting code here
 //let results = HtmlDocument.Load(@"http://www.gourmetmetzgerei-wolf.de/de/mittagsmenue")
 let html = HtmlDocument.Load(@"D:\git-repos\groma84@github\gourmetmetzgerei-wolf-app\Server\angebote.html")
@@ -75,6 +44,8 @@ type Angebot = {
     Gruppe: string;
     Eintraege: Eintrag list;
 }
+
+(*
 let angebotGruppen = 
     html.Descendants ["div"]
     |> Seq.filter(fun node -> node.HasClass("angebote"))
@@ -106,7 +77,7 @@ let angebotGruppen =
             Eintraege = items |> List.ofSeq
         }
     )
-
+*)
 let x = 
     html.Descendants ["div"]
     |> Seq.filter(fun node -> node.HasClass("angebote"))
@@ -117,19 +88,25 @@ let x =
                         |> Seq.map(fun row ->
                             let entries = row.Descendants ["td"] |> Array.ofSeq
 
-                         (*   let p = entries.[2]
+                            let p = entries.[2]
                                     |> extractInnertext
                                     |> splitAtSpace
                                     |> Seq.last
                                     |> replaceCommaWithDot
-                                    |> float;*)
+                                    |> float;
 
                             let m = entries.[1]
                                     |> extractInnertext
                                     |> limitToNumbers
-                                    // |> (Option.map int);
-                            
-                            m
+
+                            let b = entries.[0]
+                                    |> extractInnertext;
+
+                            {
+                                Preis = p;
+                                Menge = m;
+                                Bezeichnung = b;
+                            }
                         )
         items
     )

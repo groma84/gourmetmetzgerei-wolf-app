@@ -2,3 +2,4 @@ FSharp.Core
 Suave
 FSharp.Configuration
 Newtonsoft.Json
+Microsoft.FSharpLu.Json

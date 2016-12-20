@@ -26,7 +26,7 @@ let main (args : string[]) =
 
     let config = Config()
 
-    let toJson input =     
+    let toJson input = 
         let jsonSerializerSettings = new JsonSerializerSettings()
         jsonSerializerSettings.ContractResolver <- new CamelCasePropertyNamesContractResolver()   
         JsonConvert.SerializeObject(input, jsonSerializerSettings)
@@ -39,6 +39,8 @@ let main (args : string[]) =
             [ 
                 path "/" >=> OK "Hello World! MGr mit Routing";
                 path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Urls.Mittagsmenue.AbsoluteUri |> toOutput))
+                path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Urls.Angebote.AbsoluteUri |> toOutput))
+                
             ]
 
     // rest of application

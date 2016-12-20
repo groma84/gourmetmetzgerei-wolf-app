@@ -7,3 +7,6 @@ let getTagesmenue (url) =
     Downloader.download url
     >>= Parser.parseMittagsmenue
     
+let getAngebote (url) =
+    Downloader.download url
+    >>= Parser.parseAngebote
