@@ -2,4 +2,4 @@ Urls:
     Mittagsmenue: http://www.gourmetmetzgerei-wolf.de/de/mittagsmenue
     Angebote: http://www.gourmetmetzgerei-wolf.de/de/angebote
 Database:
-    DatabaseFile: ../gmwapp.sqlite
+    DatabaseFile: ./gmwapp.sqlite
