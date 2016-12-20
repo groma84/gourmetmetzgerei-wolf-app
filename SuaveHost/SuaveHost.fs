@@ -33,7 +33,8 @@ let main (args : string[]) =
             
     let toOutput (input) = 
         input |> toJson |> OK >=> Writers.setMimeType "application/json; charset=utf-8"
-              
+
+
     let app : WebPart =
         choose
             [ 
@@ -42,6 +43,10 @@ let main (args : string[]) =
                 path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Urls.Angebote.AbsoluteUri |> toOutput))
                 
             ]
+
+    // Bootstrapping
+    Bootstrap.database config.Database.DatabaseFile
+    |> ignore
 
     // rest of application
     startWebServer suaveConfig app

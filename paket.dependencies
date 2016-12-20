@@ -8,5 +8,6 @@ nuget Microsoft.FSharpLu.Json
 nuget Newtonsoft.Json
 nuget NUnit.Runners
 nuget Suave
+nuget System.Data.SQLite.Core
 
 github fsprojects/Chessie src/Chessie/ErrorHandling.fs
