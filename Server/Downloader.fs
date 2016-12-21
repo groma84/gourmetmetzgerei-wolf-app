@@ -1,11 +1,12 @@
-module Downloader
+namespace GmwApp.Server
 
 open FSharp.Data
 open Chessie.ErrorHandling
-open Errors 
+open GmwApp.Data.Errors 
 
-let download url =   
-    try
-        ok (Http.RequestString url)
-    with
-        | ex -> fail (Error.HtmlDownloadFailed ex)  
+module Downloader =
+    let download url =   
+        try
+            ok (Http.RequestString url)
+        with
+            | ex -> fail (Error.HtmlDownloadFailed ex)  

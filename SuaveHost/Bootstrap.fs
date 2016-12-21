@@ -1,7 +1,9 @@
-module Bootstrap
+namespace GmwApp.SuaveHost
 
-open Database
+open GmwApp.Database
 
-let database databaseName =
-    Database.buildConnectionString databaseName 
-    |> Database.createDatabase 
+module Bootstrap =
+    let database databaseName =
+        let connectionString = Helper.buildConnectionString databaseName 
+        connectionString |> Setup.createDatabase 
+        connectionString |> Setup.createVersionTable

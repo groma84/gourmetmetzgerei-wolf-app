@@ -51,8 +51,9 @@
       <Paket>True</Paket>
       <Link>ErrorHandling.fs</Link>
     </Compile>
-    <Compile Include="Database.fs" />
     <None Include="Script.fsx" />
+    <Compile Include="Setup.fs" />
+    <Compile Include="Helper.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Choose>

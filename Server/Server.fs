@@ -1,12 +1,13 @@
-module Server
+namespace GmwApp.Server
 
 open Chessie.ErrorHandling
-open Errors
+open GmwApp.Data.Errors
 
-let getTagesmenue (url) =
-    Downloader.download url
-    >>= Parser.parseMittagsmenue
-    
-let getAngebote (url) =
-    Downloader.download url
-    >>= Parser.parseAngebote
+module Server = 
+    let getTagesmenue url date =      
+        Downloader.download url
+        >>= Parser.parseMittagsmenue
+        
+    let getAngebote (url) =
+        Downloader.download url
+        >>= Parser.parseAngebote

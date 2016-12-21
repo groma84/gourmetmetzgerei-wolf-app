@@ -1,3 +1,5 @@
+namespace GmwApp.SuaveHost
+
 open FSharp.Configuration
 
 open Suave                 // always open suave
@@ -12,43 +14,44 @@ open Newtonsoft.Json.Serialization
 open System
 open System.Net
 
-open Server
+open GmwApp.Server
 
-type Config = YamlConfig<"config.yaml">
+module SuaveHost =
+    type Config = YamlConfig<"config.yaml">
+    
+    [<EntryPoint>]
+    let main (args : string[]) =
+        let port = args.[0]
+        let suaveConfig =
+            { defaultConfig with
+                bindings = [ HttpBinding.mk HTTP IPAddress.Loopback (uint16 port) ]
+                listenTimeout = TimeSpan.FromMilliseconds 3000. }
 
-[<EntryPoint>]
-let main (args : string[]) =
-    let port = args.[0]
-    let suaveConfig =
-        { defaultConfig with
-              bindings = [ HttpBinding.mk HTTP IPAddress.Loopback (uint16 port) ]
-              listenTimeout = TimeSpan.FromMilliseconds 3000. }
+        let config = Config()
 
-    let config = Config()
-
-    let toJson input = 
-        let jsonSerializerSettings = new JsonSerializerSettings()
-        jsonSerializerSettings.ContractResolver <- new CamelCasePropertyNamesContractResolver()   
-        JsonConvert.SerializeObject(input, jsonSerializerSettings)
-            
-    let toOutput (input) = 
-        input |> toJson |> OK >=> Writers.setMimeType "application/json; charset=utf-8"
-
-
-    let app : WebPart =
-        choose
-            [ 
-                path "/" >=> OK "Hello World! MGr mit Routing";
-                path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Urls.Mittagsmenue.AbsoluteUri |> toOutput))
-                path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Urls.Angebote.AbsoluteUri |> toOutput))
+        let toJson input = 
+            let jsonSerializerSettings = new JsonSerializerSettings()
+            jsonSerializerSettings.ContractResolver <- new CamelCasePropertyNamesContractResolver()   
+            JsonConvert.SerializeObject(input, jsonSerializerSettings)
                 
-            ]
+        let toOutput (input) = 
+            input |> toJson |> OK >=> Writers.setMimeType "application/json; charset=utf-8"
 
-    // Bootstrapping
-    Bootstrap.database config.Database.DatabaseFile
-    |> ignore
 
-    // rest of application
-    startWebServer suaveConfig app
+        let app : WebPart =
+            choose
+                [ 
+                    path "/" >=> OK "Hello World! MGr mit Routing";
+                    path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Urls.Mittagsmenue.AbsoluteUri |> toOutput))
+                    path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Urls.Angebote.AbsoluteUri |> toOutput))
+                    
+                ]
 
-    0 // main return value?
+        // Bootstrapping
+        Bootstrap.database config.Database.DatabaseFile
+        |> ignore
+
+        // rest of application
+        startWebServer suaveConfig app
+
+        0 // main return value?
