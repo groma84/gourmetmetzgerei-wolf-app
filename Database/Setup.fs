@@ -14,33 +14,33 @@ module Setup =
                                     IsoWeek INTEGER,
                                     ContentJson TEXT)"
                                     
-        // try
-        let cn = new SQLiteConnection(connectionString)
-        cn.Open()
+        try
+            let cn = new SQLiteConnection(connectionString)
+            cn.Open()
 
-        let createTableScript = menusTable
-        let cmd = new SQLiteCommand(createTableScript, cn)
-        let result = cmd.ExecuteNonQuery()
-        cn.Close()
+            let createTableScript = menusTable
+            let cmd = new SQLiteCommand(createTableScript, cn)
+            let result = cmd.ExecuteNonQuery()
+            cn.Close()
 
-        ok true
-        // with
-        //     | ex -> fail (Error.CreateDatabaseFailed ex)   
+            ok true
+        with
+            | ex -> fail (Error.CreateDatabaseFailed ex)   
 
     let createVersionTable (connectionString : string) =
         let versionTable = @"CREATE TABLE IF NOT EXISTS Version (
                                     Version INTEGER PRIMARY KEY,
-                                    UpdatedAt DateTime)"
+                                    UpdatedAt TEXT)" // Datum in SQLite -> ISO8601-String
                                     
-        // try
-        let cn = new SQLiteConnection(connectionString)
-        cn.Open()
+        try
+            let cn = new SQLiteConnection(connectionString)
+            cn.Open()
 
-        let newTableScript = versionTable    
-        let cmd = new SQLiteCommand(newTableScript, cn)
-        let result = cmd.ExecuteNonQuery()
-        cn.Close()
+            let newTableScript = versionTable    
+            let cmd = new SQLiteCommand(newTableScript, cn)
+            let result = cmd.ExecuteNonQuery()
+            cn.Close()
 
-        ok true
-        // with
-        //     | ex -> fail (Error.CreateVersionTableFailed ex)   
+            ok true
+        with
+            | ex -> fail (Error.CreateVersionTableFailed ex)   

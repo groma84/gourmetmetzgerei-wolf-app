@@ -1,40 +1,14 @@
 namespace GmwApp.Server
 
-open System.Text.RegularExpressions
 open FSharp.Data
+open System.Text.RegularExpressions
 open Chessie.ErrorHandling
+
 open GmwApp.Data.Errors
+open GmwApp.Data.Types
 
 module Parser =
-    type Preis = double
-    type Gericht = string
-    type Wochentag =  string
-
-    type GerichtMitPreis = {
-        Gericht: Gericht;
-        Preis: Preis;
-    }
-
-    type Tagesmenu = {
-        Wochentag: Wochentag;
-        Gerichte: GerichtMitPreis list;
-    }
-
-    type Eintrag = {
-        Preis: double;
-        Menge: int option;
-        Bezeichnung: string;
-    }
-
-    type Angebot = {
-        Gruppe: string;
-        Eintraege: Eintrag list;
-    }
-
-    type Woche = {
-        Tagesmenues: Tagesmenu list;
-        Angebote: Angebot list;
-    }
+    
 
     let parseMittagsmenue (html : string) =
         let extractInnertext (htmlNode : HtmlNode) =

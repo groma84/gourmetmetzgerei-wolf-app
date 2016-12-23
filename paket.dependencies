@@ -4,10 +4,11 @@ nuget FSharp.Configuration
 nuget FSharp.Core
 nuget FSharp.Data
 nuget FsUnit
-nuget Microsoft.FSharpLu.Json
-nuget Newtonsoft.Json
+nuget Microsoft.FsharpLu.Json
 nuget NUnit.Runners
+nuget SQLProvider
 nuget Suave
+nuget System.Data.SQLite
 nuget System.Data.SQLite.Core
 
 github fsprojects/Chessie src/Chessie/ErrorHandling.fs

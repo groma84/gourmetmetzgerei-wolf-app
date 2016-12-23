@@ -8,13 +8,13 @@ open Suave.Web             // for config
 open Suave.Operators
 open Suave.Filters
 
-open Newtonsoft.Json
-open Newtonsoft.Json.Serialization
+open Microsoft.FSharpLu.Json
 
 open System
 open System.Net
 
 open GmwApp.Server
+open GmwApp.Data.Errors
 
 module SuaveHost =
     type Config = YamlConfig<"config.yaml">
@@ -29,27 +29,23 @@ module SuaveHost =
 
         let config = Config()
 
-        let toJson input = 
-            let jsonSerializerSettings = new JsonSerializerSettings()
-            jsonSerializerSettings.ContractResolver <- new CamelCasePropertyNamesContractResolver()   
-            JsonConvert.SerializeObject(input, jsonSerializerSettings)
+        let toJson input =
+            Compact.serialize input 
                 
         let toOutput (input) = 
             input |> toJson |> OK >=> Writers.setMimeType "application/json; charset=utf-8"
-
 
         let app : WebPart =
             choose
                 [ 
                     path "/" >=> OK "Hello World! MGr mit Routing";
-                    path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Urls.Mittagsmenue.AbsoluteUri |> toOutput))
+                    path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Urls.Mittagsmenue.AbsoluteUri DateTime.Now |> toOutput))
                     path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Urls.Angebote.AbsoluteUri |> toOutput))
-                    
                 ]
 
         // Bootstrapping
-        Bootstrap.database config.Database.DatabaseFile
-        |> ignore
+        Db.bootstrap config.Database.DatabaseFile
+        
 
         // rest of application
         startWebServer suaveConfig app

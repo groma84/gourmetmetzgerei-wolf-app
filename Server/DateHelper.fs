@@ -3,12 +3,10 @@ namespace GmwApp.Server
 open System 
 open System.Globalization
 
+open GmwApp.Data.Types
+
 module DateHelper =
-    type YearAndWeek =
-        {
-            Year: int;
-            Week: int;
-        }
+
 
     let getWeekAndYear (date : DateTime) =
         let getIsoWeek (dt: DateTime) =
@@ -26,5 +24,5 @@ module DateHelper =
         
         {
             Year = modifiedDate.Year;
-            Week =getIsoWeek modifiedDate; 
+            Week = getIsoWeek modifiedDate; 
         }

@@ -1,5 +1,6 @@
 FSharp.Core
 Suave
 FSharp.Configuration
-Newtonsoft.Json
-Microsoft.FSharpLu.Json
+Microsoft.FsharpLu.Json
+
+File:ErrorHandling.fs .
