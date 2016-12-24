@@ -5,6 +5,7 @@ nuget FSharp.Core
 nuget FSharp.Data
 nuget FsUnit
 nuget Microsoft.FsharpLu.Json
+nuget Newtonsoft.Json
 nuget NUnit.Runners
 nuget SQLProvider
 nuget Suave

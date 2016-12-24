@@ -2,7 +2,6 @@ namespace GmwApp.Server
 
 open FSharp.Data
 open System.Text.RegularExpressions
-open Chessie.ErrorHandling
 
 open GmwApp.Data.Errors
 open GmwApp.Data.Types
@@ -48,22 +47,19 @@ module Parser =
                     )
                 |> List.ofSeq
 
-        try
-            let document = HtmlDocument.Parse html
-            let tagesmenues = 
-                document.Descendants ["div"]
-                |> Seq.filter(fun node -> node.HasClass("day"))
-                |> Seq.map(fun tagesNode ->
-                    {
-                        Wochentag = getWochentag tagesNode;
-                        Gerichte = getGerichte tagesNode;
-                    }
-                )
-                |> List.ofSeq
+        let document = HtmlDocument.Parse html
+        let tagesmenues = 
+            document.Descendants ["div"]
+            |> Seq.filter(fun node -> node.HasClass("day"))
+            |> Seq.map(fun tagesNode ->
+                {
+                    Wochentag = getWochentag tagesNode;
+                    Gerichte = getGerichte tagesNode;
+                }
+            )
+            |> Array.ofSeq
 
-            ok tagesmenues
-        with
-            | ex -> fail (Error.ParsingTagesmenueFailed ex)
+        (Some tagesmenues, ViaDownload)
 
     let parseAngebote (html : string) =
         let extractInnertext (htmlNode : HtmlNode) =
@@ -131,9 +127,6 @@ module Parser =
             |> Seq.filter(fun node -> node.HasClass("angebote"))
             |> Seq.map parseAngebotsgruppe
 
-        try
-            let document = HtmlDocument.Parse html
-            let angebote = parseAngebotsgruppen document        
-            ok angebote
-        with
-            | ex -> fail (Error.ParsingAngeboteFailed ex)    
+        let document = HtmlDocument.Parse html
+        let angebote = parseAngebotsgruppen document        
+        angebote

@@ -1,7 +1,8 @@
 FSharp.Core
+FSharp.Data
 SQLProvider
 System.Data.SQLite
-FSharp.Data
 System.Data.SQLite.Core
+Newtonsoft.Json
 Microsoft.FsharpLu.Json
 File:ErrorHandling.fs .

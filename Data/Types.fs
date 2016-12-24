@@ -31,3 +31,7 @@ module Types =
         Gruppe: string;
         Eintraege: Eintrag list;
     }
+
+    type DataOrigin =
+        | FromDatabase
+        | ViaDownload

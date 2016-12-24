@@ -39,7 +39,7 @@ module SuaveHost =
             choose
                 [ 
                     path "/" >=> OK "Hello World! MGr mit Routing";
-                    path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Urls.Mittagsmenue.AbsoluteUri DateTime.Now |> toOutput))
+                    path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Database.DatabaseFile config.Urls.Mittagsmenue.AbsoluteUri DateTime.Now |> toOutput))
                     path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Urls.Angebote.AbsoluteUri |> toOutput))
                 ]
 

@@ -12,3 +12,6 @@ module Db =
 
     let loadMenus connectionString yearAndWeek =
         Menus.loadMenus connectionString yearAndWeek
+
+    let saveMenus connectionString yearAndWeek data =
+        Menus.saveMenus connectionString yearAndWeek data
