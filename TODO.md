@@ -1,6 +1,5 @@
 # NEXT
-6) DoesExistInDatabase
+6) 
 
 # LATER
-7) WriteNewToDatabase
-8) Workflow komplettieren
+7) Deployment auf Azure

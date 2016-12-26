@@ -8,32 +8,30 @@ module Server =
     let getTagesmenue dbName url date =
         let connectionString = Helper.buildConnectionString dbName
 
-        let downloadAndParseIfNecessary weekAndYear existingData =
-            let getMenusViaDownloadAndStoreInDatabase =
-                let storeInDb dataToStore =
-                    match dataToStore with
-                        | Some data, _ -> Some (Db.saveMenus connectionString weekAndYear data)
-                        | _ -> Option<Tagesmenu []>.None
-                    |> ignore
-
-                    dataToStore        
-                    
-
-                let result =    Downloader.download url
+        let downloadAndParseIfNecessary weekAndYear =
+            let storeInDb dataToStore =
+                printfn "Storing new data in database: %A" dataToStore
+                match dataToStore with
+                    | Some data, _ -> Some (Db.saveMenus connectionString weekAndYear data)
+                    | _ -> Option<Tagesmenu []>.None
+                |> ignore
+            
+            let getMenusViaDownloadAndStoreInDatabase =        
+                printfn "No existing data found, downloading from '%s'" url
+                let parsedData = Downloader.download url
                                 |> Parser.parseMittagsmenue
-                                |> storeInDb           
-                                
-                result
-
-            match existingData with
-                | (Some x, _) -> existingData
-                | (None, _) -> getMenusViaDownloadAndStoreInDatabase
-        
+                storeInDb parsedData
+                parsedData
+                
+            getMenusViaDownloadAndStoreInDatabase
 
         let weekAndYear = DateHelper.getWeekAndYear date
+        printfn "Loading data for year %i and week %i" weekAndYear.Year weekAndYear.Week
+        let fromDb = Db.loadMenus connectionString weekAndYear
+        let data, _ = match fromDb with
+                        | (Some x, _) -> fromDb
+                        | (None, _) -> downloadAndParseIfNecessary weekAndYear
 
-        let data, _ =   Db.loadMenus connectionString weekAndYear    
-                        |> downloadAndParseIfNecessary weekAndYear
         data
 
     let getAngebote (url) =
