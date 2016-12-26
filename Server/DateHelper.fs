@@ -6,8 +6,6 @@ open System.Globalization
 open GmwApp.Data.Types
 
 module DateHelper =
-
-
     let getWeekAndYear (date : DateTime) =
         let getIsoWeek (dt: DateTime) =
             let day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek dt

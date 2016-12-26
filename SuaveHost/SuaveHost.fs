@@ -8,7 +8,7 @@ open Suave.Web             // for config
 open Suave.Operators
 open Suave.Filters
 
-open Microsoft.FSharpLu.Json
+open Chiron
 
 open System
 open System.Net
@@ -29,18 +29,15 @@ module SuaveHost =
 
         let config = Config()
 
-        let toJson input =
-            Compact.serialize input 
-                
-        let toOutput (input) = 
-            input |> toJson |> OK >=> Writers.setMimeType "application/json; charset=utf-8"
+        let setOk (inputJson) = 
+            inputJson |> OK >=> Writers.setMimeType "application/json; charset=utf-8"
 
         let app : WebPart =
             choose
                 [ 
                     path "/" >=> OK "Hello World! MGr mit Routing";
-                    path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Database.DatabaseFile config.Urls.Mittagsmenue.AbsoluteUri DateTime.Now |> toOutput))
-                    path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Urls.Angebote.AbsoluteUri |> toOutput))
+                    path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Database.DatabaseFile config.Urls.Mittagsmenue.AbsoluteUri DateTime.Now |> Json.serialize |> (Json.formatWith JsonFormattingOptions.Pretty) |> setOk))
+                    path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Urls.Angebote.AbsoluteUri |> Array.ofSeq |> Json.serialize |> (Json.formatWith JsonFormattingOptions.Pretty) |> setOk))
                 ]
 
         // Bootstrapping

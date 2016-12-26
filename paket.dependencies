@@ -1,15 +1,14 @@
 source https://www.nuget.org/api/v2
+nuget Chiron
 nuget FAKE
 nuget FSharp.Configuration
 nuget FSharp.Core
 nuget FSharp.Data
 nuget FsUnit
-nuget Microsoft.FsharpLu.Json
-nuget Newtonsoft.Json
-nuget NUnit.Runners
 nuget SQLProvider
-nuget Suave
 nuget System.Data.SQLite
 nuget System.Data.SQLite.Core
+nuget Suave
+nuget NUnit.Runners
 
 github fsprojects/Chessie src/Chessie/ErrorHandling.fs

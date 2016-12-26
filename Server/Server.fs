@@ -32,8 +32,9 @@ module Server =
 
         let weekAndYear = DateHelper.getWeekAndYear date
 
-        Db.loadMenus connectionString weekAndYear    
-        |> downloadAndParseIfNecessary weekAndYear
+        let data, _ =   Db.loadMenus connectionString weekAndYear    
+                        |> downloadAndParseIfNecessary weekAndYear
+        data
 
     let getAngebote (url) =
         Downloader.download url

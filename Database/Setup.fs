@@ -21,6 +21,9 @@ module Setup =
         let result = cmd.ExecuteNonQuery()
         cn.Close()
 
+        FSharp.Data.Sql.Common.QueryEvents.SqlQueryEvent |> Event.add (printfn "Executing SQL: %s")
+
+
 
     let createVersionTable (connectionString : string) =
         let versionTable = @"CREATE TABLE IF NOT EXISTS Version (

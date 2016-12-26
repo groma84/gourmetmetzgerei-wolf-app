@@ -1,6 +1,6 @@
 FSharp.Core
-Suave
 FSharp.Configuration
-Microsoft.FsharpLu.Json
+Suave
+Chiron
 
 File:ErrorHandling.fs .
