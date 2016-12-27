@@ -10,7 +10,7 @@ open GmwApp.Data.Errors
 module Menus =
 
     type SqlData = SqlDataProvider<Common.DatabaseProviderTypes.SQLITE,
-                                    ConnectionString = DB_CONNECTIONSTRING,
+                                    ConnectionString = DB_TYPEPROVIDER_CONNECTIONSTRING,
                                     ResolutionPath = @"..\packages\System.Data.SQLite.Core\lib\net46",
                                     CaseSensitivityChange = Common.CaseSensitivityChange.ORIGINAL,
                                     UseOptionTypes = true>
