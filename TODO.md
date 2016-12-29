@@ -1,5 +1,7 @@
 # NEXT
-6) 
+1) <s>Implement Offers table</s>
+1) Deploy Offers table
 
 # LATER
-7) Deployment auf Azure
+1) Implement Offers workflow logic
+1) Deploy Offers workflow logic

@@ -21,19 +21,17 @@ module Setup =
         let result = cmd.ExecuteNonQuery()
         cn.Close()
 
-        FSharp.Data.Sql.Common.QueryEvents.SqlQueryEvent |> Event.add (printfn "Executing SQL: %s")
 
-
-
-    let createVersionTable (connectionString : string) =
-        let versionTable = @"CREATE TABLE IF NOT EXISTS Version (
-                                    Version INTEGER PRIMARY KEY,
-                                    UpdatedAt TEXT)" // Datum in SQLite -> ISO8601-String
+    let createOffersTable (connectionString : string) =
+        let sql = @"CREATE TABLE IF NOT EXISTS Offers (
+                                    _id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                    Year INTEGER,
+                                    IsoWeek INTEGER,
+                                    ContentJson TEXT)"
                                     
         let cn = new SQLiteConnection(connectionString)
         cn.Open()
 
-        let newTableScript = versionTable    
-        let cmd = new SQLiteCommand(newTableScript, cn)
+        let cmd = new SQLiteCommand(sql, cn)
         let result = cmd.ExecuteNonQuery()
         cn.Close()

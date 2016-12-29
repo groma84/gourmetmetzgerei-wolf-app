@@ -51,7 +51,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Script.fsx" />
+    <None Include="CreateTables.fsx" />
     <Compile Include="Helper.fs" />
     <Compile Include="Setup.fs" />
     <Compile Include="Menus.fs" />
