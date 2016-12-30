@@ -3,6 +3,7 @@
 
 # User-specific files
 *.sqlite
+!Database/gmwapp.sqlite
 
 *.suo
 *.user
