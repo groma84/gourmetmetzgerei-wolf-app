@@ -37,7 +37,7 @@ module SuaveHost =
                 [ 
                     path "/" >=> OK "Hello World! MGr mit Routing";
                     path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Database.DatabaseFile config.Urls.Mittagsmenue.AbsoluteUri DateTime.Now |> Json.serialize |> (Json.formatWith JsonFormattingOptions.Pretty) |> setOk))
-                    path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Urls.Angebote.AbsoluteUri |> Array.ofSeq |> Json.serialize |> (Json.formatWith JsonFormattingOptions.Pretty) |> setOk))
+                    path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Database.DatabaseFile config.Urls.Angebote.AbsoluteUri DateTime.Now |> Json.serialize |> (Json.formatWith JsonFormattingOptions.Pretty) |> setOk))
                 ]
 
         // Bootstrapping

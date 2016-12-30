@@ -18,7 +18,7 @@ module Menus =
     
 
 
-    let loadMenus connectionString yearAndWeek =
+    let load connectionString yearAndWeek =
         let fromJsonToTagesmenu json : Tagesmenu [] = 
             json
             |> Json.parse
@@ -42,7 +42,7 @@ module Menus =
 
         (parsed, FromDatabase)
         
-    let saveMenus connectionString yearAndWeek (data : Tagesmenu []) =
+    let save connectionString yearAndWeek (data : Tagesmenu []) =
         let toJson o =
             o |> Json.serialize |> Json.format 
 

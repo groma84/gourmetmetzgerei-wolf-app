@@ -55,6 +55,7 @@
     <Compile Include="Helper.fs" />
     <Compile Include="Setup.fs" />
     <Compile Include="Menus.fs" />
+    <Compile Include="Offers.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Choose>

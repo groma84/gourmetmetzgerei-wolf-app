@@ -128,5 +128,7 @@ module Parser =
             |> Seq.map parseAngebotsgruppe
 
         let document = HtmlDocument.Parse html
-        let angebote = parseAngebotsgruppen document        
-        angebote
+        let angebote = parseAngebotsgruppen document |> Array.ofSeq    
+
+        (Some angebote, ViaDownload)  
+        
