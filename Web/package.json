@@ -1,0 +1,20 @@
+{
+  "name": "Web",
+  "version": "1.0.0",
+  "main": "bundle.js",
+  "author": "Martin Grotz",
+  "license": "MIT",
+  "devDependencies": {
+    "fable-compiler": "^0.7.24",
+    "source-map-loader": "^0.1.5",
+    "webpack": "^1.14.0"
+  },
+  "dependencies": {
+    "core-js": "^2.4.1",
+    "fable-core": "^0.7.17"
+  },
+  "scripts": {
+    "build": "fable",
+    "watch": "fable -w --target watch"
+  }
+}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["..\\Start.fs"],"names":[],"mappings":";;;;;;;;AAQQ,gCAAU,iCAAV;AACJ","file":"Start.js","sourcesContent":["namespace Web\r\n\r\nopen Fable.Core \r\nopen Fable.Import\r\n\r\nmodule Start = \r\n    Node.require.Invoke(\"core-js\") |> ignore\r\n\r\n    let element = Browser.document.getElementById \"sample\"\r\n    element.innerText <- \"Hello, world !!\""]}

@@ -11,4 +11,7 @@ nuget System.Data.SQLite.Core
 nuget Suave
 nuget NUnit.Runners
 
+nuget Node.js
+nuget Yarn.js
+
 github fsprojects/Chessie src/Chessie/ErrorHandling.fs

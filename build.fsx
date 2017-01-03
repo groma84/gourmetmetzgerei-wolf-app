@@ -65,6 +65,16 @@ Target "CopyKudu" (fun _ ->
     CopyFile (deploymentTemp + "/SuaveHost.exe.config") "SuaveHost/app.config"
 )
 
+// Target "YarnInstall" (fun _ ->
+//     let result = ExecProcess (fun info ->
+//     info.FileName <- "c:/MyProc.exe" info.WorkingDirectory <- "c:/workingDirectory" info.Arguments <- "-v") (TimeSpan.FromMinutes 5.0)
+//   Npm (fun p ->
+//         { p with
+//           Command = (Run "build")
+//           WorkingDirectory = "./src/FAKESimple.Web/"
+//         })
+// )
+
 // Promote all staged files into the real application
 Target "Deploy" kuduSync
 

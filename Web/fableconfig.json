@@ -1,0 +1,17 @@
+{
+  "module": "commonjs",
+  "sourceMaps": true,
+  "projFile": "./Web.fsproj",
+  "outDir": "temp",
+  "scripts": {
+    "prebuild": "yarn",
+    "postbuild": "webpack"
+  },
+  "targets": {
+    "watch": {
+      "scripts": {
+        "postbuild": "webpack --watch"
+      }
+    }
+  }
+}
