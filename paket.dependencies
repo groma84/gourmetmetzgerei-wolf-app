@@ -12,6 +12,6 @@ nuget Suave
 nuget NUnit.Runners
 
 nuget Node.js
-nuget Yarn.js
+nuget Yarnpkg.Yarn
 
 github fsprojects/Chessie src/Chessie/ErrorHandling.fs

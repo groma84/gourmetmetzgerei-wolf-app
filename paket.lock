@@ -14,6 +14,7 @@ NUGET
     FsUnit (2.3.2)
       FSharp.Core (>= 3.1.2.5)
       NUnit (3.5)
+    Node.js (5.3)
     NUnit (3.5)
     NUnit.ConsoleRunner (3.5)
     NUnit.Extension.NUnitProjectLoader (3.5)
@@ -39,6 +40,7 @@ NUGET
     System.Data.SQLite.EF6 (1.0.104) - framework: net40, net45, net451, >= net46
       EntityFramework (>= 6.0) - framework: net40, net45, net451, >= net46
     System.Data.SQLite.Linq (1.0.104) - framework: net20, net40, net45, net451, >= net46
+    Yarnpkg.Yarn (0.17.4)
     Zlib.Portable (1.11) - framework: >= netstandard11, portable-net45+sl5+win8, portable-net45+win8, portable-net45+win8+wp8+wpa81
 GITHUB
   remote: fsprojects/Chessie

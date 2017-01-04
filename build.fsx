@@ -14,6 +14,7 @@ let testDir = "./test/"
 let appReferences  =
     !! "/**/*.csproj"
     ++ "/**/*.fsproj"
+    -- "/Web/Web.fsproj"
 
 let testReferences  =
     !! "/**/*Test.csproj"
@@ -56,6 +57,10 @@ Target "CopyLocal" (fun _ ->
     copyToBuildDir "SuaveHost/config.yaml"
 
     CopyFile (buildDir + "/SuaveHost.exe.config") "SuaveHost/app.config"
+
+    let publicDir = (buildDir + "/public")
+    CreateDir publicDir
+    CopyDir publicDir "Web/public" (fun _ -> true)
 )
 
 Target "CopyKudu" (fun _ ->
@@ -63,6 +68,11 @@ Target "CopyKudu" (fun _ ->
     copyToTempDir "web.config"
     copyToTempDir "SuaveHost/config.yaml"
     CopyFile (deploymentTemp + "/SuaveHost.exe.config") "SuaveHost/app.config"
+
+    [""] |> Log "Copy 'public' directory: "
+    let deploymentDirPublic = (deploymentTemp + "/public")
+    CreateDir deploymentDirPublic
+    CopyDir deploymentDirPublic "Web/public" (fun _ -> true)
 )
 
 // Target "YarnInstall" (fun _ ->

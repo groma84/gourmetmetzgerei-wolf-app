@@ -7,6 +7,7 @@ open Suave.Successful      // for OK-result
 open Suave.Web             // for config
 open Suave.Operators
 open Suave.Filters
+open Suave.Files
 
 open Chiron
 
@@ -35,9 +36,12 @@ module SuaveHost =
         let app : WebPart =
             choose
                 [ 
-                    path "/" >=> OK "Hello World! MGr mit Routing";
+                    // path "/" >=> OK "Hello World! MGr mit Routing";
+                    // path "/public/bundle.js" >=> Writers.setMimeType "application/javascript" >=> OK (file "./public/bundle.js")
                     path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Database.DatabaseFile config.Urls.Mittagsmenue.AbsoluteUri DateTime.Now |> Json.serialize |> (Json.formatWith JsonFormattingOptions.Pretty) |> setOk))
                     path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Database.DatabaseFile config.Urls.Angebote.AbsoluteUri DateTime.Now |> Json.serialize |> (Json.formatWith JsonFormattingOptions.Pretty) |> setOk))
+                    path "/" >=> file "./public/index.html"
+                    pathScan "/%s" (fun filename -> file (sprintf "./public/%s" filename))
                 ]
 
         // Bootstrapping
