@@ -14,7 +14,7 @@ let testDir = "./test/"
 let appReferences  =
     !! "/**/*.csproj"
     ++ "/**/*.fsproj"
-    -- "/Web/Web.fsproj"
+    -- "/Web/**/*.fsproj"
 
 let testReferences  =
     !! "/**/*Test.csproj"
@@ -32,6 +32,7 @@ Target "BuildLocal" (fun _ ->
     MSBuildDebug buildDir "Build" appReferences
     |> Log "AppBuild-Output buildDir: "
 )
+
 Target "BuildKudu" (fun _ ->
     MSBuildDebug deploymentTemp "Build" appReferences
     |> Log "AppBuild-Output deploymentTemp: "
@@ -74,16 +75,6 @@ Target "CopyKudu" (fun _ ->
     CreateDir deploymentDirPublic
     CopyDir deploymentDirPublic "Web/public" (fun _ -> true)
 )
-
-// Target "YarnInstall" (fun _ ->
-//     let result = ExecProcess (fun info ->
-//     info.FileName <- "c:/MyProc.exe" info.WorkingDirectory <- "c:/workingDirectory" info.Arguments <- "-v") (TimeSpan.FromMinutes 5.0)
-//   Npm (fun p ->
-//         { p with
-//           Command = (Run "build")
-//           WorkingDirectory = "./src/FAKESimple.Web/"
-//         })
-// )
 
 // Promote all staged files into the real application
 Target "Deploy" kuduSync
