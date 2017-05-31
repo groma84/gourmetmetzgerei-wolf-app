@@ -1,7 +1,7 @@
 namespace GmwApp.Database
 
 open FSharp.Data.Sql
-open Chiron
+open Newtonsoft.Json
 
 open GmwApp.Data.Constants
 open GmwApp.Data.Types
@@ -20,9 +20,7 @@ module Offers =
 
     let load connectionString yearAndWeek =
         let fromJson json : Angebot [] = 
-            json
-            |> Json.parse
-            |> Json.deserialize
+            JsonConvert.DeserializeObject<Angebot []> json
 
         printfn "Offers -> load: ConnectionString: %s" connectionString
 
@@ -44,7 +42,7 @@ module Offers =
         
     let save connectionString yearAndWeek (data : Angebot []) =
         let toJson o =
-            o |> Json.serialize |> Json.format 
+            JsonConvert.SerializeObject (o, Formatting.Indented)
 
         let ctx = SqlData.GetDataContext connectionString
         

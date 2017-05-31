@@ -1,10 +1,10 @@
 FSharp.Core
 FSharp.Data
 
-Chiron
-
 SQLProvider
 System.Data.SQLite
 System.Data.SQLite.Core
+Newtonsoft.Json
+
 
 File:ErrorHandling.fs .

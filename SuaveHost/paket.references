@@ -1,6 +1,6 @@
 FSharp.Core
 FSharp.Configuration
 Suave
-Chiron
+Newtonsoft.Json
 
 File:ErrorHandling.fs .
