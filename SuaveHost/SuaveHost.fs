@@ -8,7 +8,7 @@ open Suave.Web             // for config
 open Suave.Operators
 open Suave.Filters
 
-open Chiron
+open Microsoft.FSharpLu.Json.Default
 
 open System
 open System.Net
@@ -36,8 +36,8 @@ module SuaveHost =
             choose
                 [ 
                     path "/" >=> OK "Hello World! MGr mit Routing";
-                    path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Database.DatabaseFile config.Urls.Mittagsmenue.AbsoluteUri DateTime.Now |> Json.serialize |> (Json.formatWith JsonFormattingOptions.Pretty) |> setOk))
-                    path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Database.DatabaseFile config.Urls.Angebote.AbsoluteUri DateTime.Now |> Json.serialize |> (Json.formatWith JsonFormattingOptions.Pretty) |> setOk))
+                    path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Database.DatabaseFile config.Urls.Mittagsmenue.AbsoluteUri DateTime.Now |> serialize |> setOk))
+                    path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Database.DatabaseFile config.Urls.Angebote.AbsoluteUri DateTime.Now |> serialize |> setOk))
                 ]
 
         // Bootstrapping

@@ -1,54 +1,104 @@
 // include Fake libs
 #r "./packages/FAKE/tools/FakeLib.dll"
 
+open System
+open System.IO
 open Fake
-open Fake.Testing
+open Fake.Testing.Expecto
 open Fake.Azure.Kudu
 
 // Directories
 let buildDir  = "./build/"
-let testDir = "./test/"
+let clientDir = "./client/"
+let testOutputDir = "./tests/"
 
+// Helper
+let run' timeout cmd args dir =
+    if execProcess (fun info ->
+        info.FileName <- cmd
+        if not (String.IsNullOrWhiteSpace dir) then
+            info.WorkingDirectory <- dir
+        info.Arguments <- args
+    ) timeout |> not then
+        failwithf "Error while running '%s' with args: %s" cmd args
+
+let run = run' System.TimeSpan.MaxValue
+
+let platformTool tool winTool =
+    let tool = if isUnix then tool else winTool
+    tool
+    |> ProcessHelper.tryFindFileOnPath
+    |> function Some t -> t | _ -> failwithf "%s not found" tool
+
+let yarnTool = platformTool "yarn" "yarn.cmd"
+let elmAppTool = platformTool "elm-app" "elm-app.cmd"
+
+let all _ = true
 
 // Filesets
 let appReferences  =
     !! "/**/*.csproj"
     ++ "/**/*.fsproj"
 
-let testReferences  =
-    !! "/**/*Test.csproj"
-    ++ "/**/*Test.fsproj"
+let testAssemblies = 
+    "tests/*.Test.exe"
 
 // version info
 let version = "0.1"  // or retrieve from CI server
 
 // Targets
 Target "Clean" (fun _ ->
-    CleanDirs [buildDir; testDir; deploymentTemp;] 
+    CleanDirs [buildDir; testOutputDir; deploymentTemp;] 
 )
 
 Target "BuildLocal" (fun _ ->
-    MSBuildDebug buildDir "Build" appReferences
-    |> Log "AppBuild-Output buildDir: "
+    let target = "Build"
+    let parameters = [
+            ("Configuration", "Debug"); 
+            ("BuildProjectReferences", "true");
+            ("TreatWarningsAsErrors", "true");
+        ]
+    let solution = [ "./SuaveHost/SuaveHost.fsproj" ]
+    MSBuild buildDir target parameters solution
+    |> Log "MSBuild Output: "
 )
 Target "BuildKudu" (fun _ ->
-    MSBuildDebug deploymentTemp "Build" appReferences
-    |> Log "AppBuild-Output deploymentTemp: "
+    let target = "Build"
+    let parameters = [
+            ("Configuration", "Release"); 
+            ("BuildProjectReferences", "true");
+            ("TreatWarningsAsErrors", "true");
+        ]
+    let solution = [ "./SuaveHost/SuaveHost.fsproj" ]
+    MSBuild deploymentTemp target parameters solution
+    |> Log "MSBuild Output: "
 )
 
-let testDlls = !! (testDir + "/*Test.dll")
-Target "BuildTest" (fun _ ->
-    MSBuildDebug testDir "Build" testReferences
-        |> Log "TestBuild-Output: "
+Target "BuildTests" (fun _ ->
+    let target = "Build"
+    let parameters = [
+            ("Configuration", "Release"); 
+            ("BuildProjectReferences", "true");
+            ("TreatWarningsAsErrors", "true");
+        ]
+    let solution = [ "./Berechnung.Test/Berechnung.Test.fsproj" ]
+    MSBuild testOutputDir target parameters solution
+    |> Log "MSBuild Output: "
 )
+
+Target "BuildClient" (fun _ ->
+    printfn "Yarn version:"
+    run yarnTool "--version" clientDir
+    //run yarnTool "install" clientDir
+    printfn "Running elm-app to build the Elm app:"
+    run elmAppTool "build" clientDir
+)
+
 Target "RunTests" (fun _ ->
-    testDlls
-        |> NUnit3  (fun p -> 
-            {p with
-                ToolPath = "packages/NUnit.ConsoleRunner/tools/nunit3-console.exe";
-                Workers = Some 1;
-                WorkingDir = testDir;
-                })
+    !! testAssemblies
+    |> Expecto (fun p ->
+        { p with
+            Parallel = false} )
 )
 
 Target "CopyLocal" (fun _ ->
@@ -71,9 +121,8 @@ Target "Deploy" kuduSync
 // Build order
 "Clean"
     ==> "BuildLocal"
+    ==> "BuildClient"
     ==> "CopyLocal"
-    ==> "BuildTest"
-    ==> "RunTests"
 
 // Set up dependencies
 "Clean"

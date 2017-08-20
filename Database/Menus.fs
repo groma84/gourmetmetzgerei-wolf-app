@@ -1,7 +1,7 @@
 namespace GmwApp.Database
 
 open FSharp.Data.Sql
-open Chiron
+open Microsoft.FSharpLu.Json.Default
 
 open GmwApp.Data.Constants
 open GmwApp.Data.Types
@@ -21,8 +21,7 @@ module Menus =
     let load connectionString yearAndWeek =
         let fromJsonToTagesmenu json : Tagesmenu [] = 
             json
-            |> Json.parse
-            |> Json.deserialize
+            |> deserialize<Tagesmenu []>
 
         printfn "loadMenus ConnectionString: %s" connectionString
 
@@ -44,7 +43,7 @@ module Menus =
         
     let save connectionString yearAndWeek (data : Tagesmenu []) =
         let toJson o =
-            o |> Json.serialize |> Json.format 
+            o |> serialize 
 
         let ctx = SqlData.GetDataContext connectionString
         
