@@ -1,8 +1,7 @@
 namespace GmwApp.Database
 
 open FSharp.Data.Sql
-
-open Newtonsoft.Json
+open Chiron
 
 open GmwApp.Data.Constants
 open GmwApp.Data.Types
@@ -16,9 +15,14 @@ module Menus =
                                     CaseSensitivityChange = Common.CaseSensitivityChange.ORIGINAL,
                                     UseOptionTypes = true>
 
+    
+
+
     let load connectionString yearAndWeek =
         let fromJsonToTagesmenu json : Tagesmenu [] = 
-            JsonConvert.DeserializeObject<Tagesmenu []> json
+            json
+            |> Json.parse
+            |> Json.deserialize
 
         printfn "loadMenus ConnectionString: %s" connectionString
 
@@ -40,7 +44,7 @@ module Menus =
         
     let save connectionString yearAndWeek (data : Tagesmenu []) =
         let toJson o =
-             JsonConvert.SerializeObject (o, Formatting.Indented)
+            o |> Json.serialize |> Json.format 
 
         let ctx = SqlData.GetDataContext connectionString
         

@@ -7,11 +7,11 @@ open Suave.Successful      // for OK-result
 open Suave.Web             // for config
 open Suave.Operators
 open Suave.Filters
-open Suave.Files
+
+open Chiron
 
 open System
 open System.Net
-open Newtonsoft.Json
 
 open GmwApp.Server
 open GmwApp.Data.Errors
@@ -35,12 +35,9 @@ module SuaveHost =
         let app : WebPart =
             choose
                 [ 
-                    // path "/" >=> OK "Hello World! MGr mit Routing";
-                    // path "/public/bundle.js" >=> Writers.setMimeType "application/javascript" >=> OK (file "./public/bundle.js")
-                    path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Database.DatabaseFile config.Urls.Mittagsmenue.AbsoluteUri DateTime.Now |> JsonConvert.SerializeObject |> setOk))
-                    path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Database.DatabaseFile config.Urls.Angebote.AbsoluteUri DateTime.Now |> JsonConvert.SerializeObject |> setOk))
-                    path "/" >=> file "./public/index.html"
-                    pathScan "/%s" (fun filename -> file (sprintf "./public/%s" filename))
+                    path "/" >=> OK "Hello World! MGr mit Routing";
+                    path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Database.DatabaseFile config.Urls.Mittagsmenue.AbsoluteUri DateTime.Now |> Json.serialize |> (Json.formatWith JsonFormattingOptions.Pretty) |> setOk))
+                    path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Database.DatabaseFile config.Urls.Angebote.AbsoluteUri DateTime.Now |> Json.serialize |> (Json.formatWith JsonFormattingOptions.Pretty) |> setOk))
                 ]
 
         // Bootstrapping
