@@ -11,3 +11,4 @@ nuget SQLProvider
 nuget Suave
 nuget System.Data.SQLite
 nuget System.Data.SQLite.Core
+nuget WinSCP

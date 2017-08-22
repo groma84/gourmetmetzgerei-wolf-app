@@ -5,12 +5,20 @@ open System
 open System.IO
 open Fake
 open Fake.Testing.Expecto
-open Fake.Azure.Kudu
 
 // Directories
 let buildDir  = "./build/"
 let clientDir = "./client/"
+let deployDir = "./deploy/"
 let testOutputDir = "./tests/"
+
+
+type AzureCreds = {
+    url : string
+    username : string
+    password : string
+}
+
 
 // Helper
 let run' timeout cmd args dir =
@@ -32,6 +40,7 @@ let platformTool tool winTool =
 
 let yarnTool = platformTool "yarn" "yarn.cmd"
 let elmAppTool = platformTool "elm-app" "elm-app.cmd"
+let winScpExePath = "./packages/WinSCP/content/WinSCP.exe"
 
 let all _ = true
 
@@ -48,7 +57,7 @@ let version = "0.1"  // or retrieve from CI server
 
 // Targets
 Target "Clean" (fun _ ->
-    CleanDirs [buildDir; testOutputDir; deploymentTemp;] 
+    CleanDirs [buildDir; testOutputDir; deployDir;] 
 )
 
 Target "BuildLocal" (fun _ ->
@@ -62,7 +71,7 @@ Target "BuildLocal" (fun _ ->
     MSBuild buildDir target parameters solution
     |> Log "MSBuild Output: "
 )
-Target "BuildKudu" (fun _ ->
+Target "BuildDeploy" (fun _ ->
     let target = "Build"
     let parameters = [
             ("Configuration", "Release"); 
@@ -70,7 +79,7 @@ Target "BuildKudu" (fun _ ->
             ("TreatWarningsAsErrors", "true");
         ]
     let solution = [ "./SuaveHost/SuaveHost.fsproj" ]
-    MSBuild deploymentTemp target parameters solution
+    MSBuild deployDir target parameters solution
     |> Log "MSBuild Output: "
 )
 
@@ -108,15 +117,64 @@ Target "CopyLocal" (fun _ ->
     CopyFile (buildDir + "/SuaveHost.exe.config") "SuaveHost/app.config"
 )
 
-Target "CopyKudu" (fun _ ->
-    let copyToTempDir = CopyFile deploymentTemp
+Target "CopyDeploy" (fun _ ->
+    let copyToTempDir = CopyFile deployDir
     copyToTempDir "web.config"
     copyToTempDir "SuaveHost/config.yaml"
-    CopyFile (deploymentTemp + "/SuaveHost.exe.config") "SuaveHost/app.config"
+    CopyFile (deployDir + "/SuaveHost.exe.config") "SuaveHost/app.config"
 )
 
+Target "CopyClientDeploy" (fun _ ->
+    printfn "*** Copying client to deployment directory ***"
+    // TODO
+)
+
+Target "UploadToAzure" (fun _ ->
+    printfn "*** Uploading to Azure ***"
+    
+
+    let credsFile = "azure_deployment_credentials.txt"
+
+    let creds =
+        if System.IO.File.Exists credsFile then
+            let lines = System.IO.File.ReadAllLines credsFile
+            {
+                url = lines.[0]
+                username = lines.[1]
+                password = lines.[2]
+            }
+        else
+            failwith <| (sprintf "Credentials file %s does not exist. Three lines: Url, Username, Password" credsFile)
+
+    let connectionString = 
+        sprintf "ftps://%s:%s@%s" creds.username creds.password creds.url
+
+    let ftpCommand =
+        sprintf """ /command "open %s" "synchronize remote -delete -criteria=either "".\deploy"" ""/site/wwwroot"" " "exit" """ connectionString
+
+    let logfile = "azureuploadlog.txt"
+    let logCommand = sprintf "/log=%s" logfile
+
+    let commands = [
+        "/console"
+        "/nointeractiveinput"
+        logCommand
+        ftpCommand
+    ]
+
+    let finalCommand =
+        List.fold (fun acc s -> acc + " " + s) "" commands
+
+
+    System.IO.File.Delete logfile
+    run winScpExePath finalCommand "."
+
+    )
+
 // Promote all staged files into the real application
-Target "Deploy" kuduSync
+Target "Deploy" (fun _ ->
+    printfn "*** Finished deployment ***"
+)
 
 // Build order
 "Clean"
@@ -126,9 +184,13 @@ Target "Deploy" kuduSync
 
 // Set up dependencies
 "Clean"
-    ==> "BuildKudu"
-    ==> "CopyKudu"
+    ==> "BuildDeploy"
+    ==> "CopyDeploy"
+    //==> "RunTests"
+    ==> "BuildClient"    
+    ==> "CopyClientDeploy"
+    ==> "UploadToAzure"
     ==> "Deploy"
 
-// RunTargetOrDefault "CopyLocal"
-RunTargetOrDefault "Deploy"
+RunTargetOrDefault "CopyLocal"
+//RunTargetOrDefault "Deploy"

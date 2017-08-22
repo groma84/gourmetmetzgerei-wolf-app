@@ -722,4 +722,5 @@ NUGET
       System.Text.Encoding (>= 4.3) - restriction: && (< net46) (>= netstandard1.3) (< monotouch) (< xamarinios) (< xamarinmac)
       System.Threading (>= 4.3) - restriction: && (< net46) (>= netstandard1.3) (< monotouch) (< xamarinios) (< xamarinmac)
       System.Xml.ReaderWriter (>= 4.3) - restriction: && (< net46) (>= netstandard1.3) (< monotouch) (< xamarinios) (< xamarinmac)
+    WinSCP (5.9.6)
     Zlib.Portable (1.11) - restriction: || (&& (< net40) (>= portable-net45+win8)) (&& (< net40) (>= portable-net45+win8+sl5) (< portable-net45+win8+wp8+wpa81)) (&& (< net40) (< portable-net45+win8+sl5) (>= portable-net45+win8+wp8+wpa81))

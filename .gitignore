@@ -3,6 +3,8 @@
 
 # User-specific files
 *.sqlite
+azure_deployment_credentials.txt
+azureuploadlog.txt
 !Database/gmwapp.sqlite
 
 *.suo
