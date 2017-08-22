@@ -179,7 +179,6 @@ Target "Deploy" (fun _ ->
 // Build order
 "Clean"
     ==> "BuildLocal"
-    ==> "BuildClient"
     ==> "CopyLocal"
 
 // Set up dependencies

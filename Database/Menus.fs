@@ -41,7 +41,7 @@ module Menus =
 
         (parsed, FromDatabase)
         
-    let save connectionString yearAndWeek (data : Tagesmenu []) =
+    let save (connectionString : string) yearAndWeek (data : Tagesmenu []) =
         let toJson o =
             o |> serialize 
 

@@ -41,7 +41,7 @@ module Offers =
 
         (parsed, FromDatabase)
         
-    let save connectionString yearAndWeek (data : Angebot []) =
+    let save (connectionString : string) yearAndWeek (data : Angebot []) =
         let toJson o =
             o |> serialize
 
