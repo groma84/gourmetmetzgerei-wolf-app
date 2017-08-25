@@ -2,18 +2,60 @@ module Main exposing (..)
 
 import Html exposing (Html, text, div, img)
 import Html.Attributes exposing (src)
-
+import Date
+import Task
+import RemoteData exposing (..)
 
 ---- MODEL ----
+type Tab  
+    = Tagesmenues
+    | Angebote
+    | Impressum
+
+type alias TagesmenueViewModel = 
+    {
+    }
+
+type alias Tagesmenue =
+    {
+
+    }
+
+type alias AngeboteViewModel =
+    {
+
+    }
+
+type alias Angebot = 
+    {
+
+    }
 
 
 type alias Model =
-    {}
+    {
+        activeTab : Tab
+        , currentDay : Date.Day
+        , tagesmenueViewModel : TagesmenueViewModel
+        , tagesmenueData : WebData (List Tagesmenue)
+        , angeboteViewModel : AngeboteViewModel
+        , angeboteData : WebData (List Angebot)
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {}, Cmd.none )
+    ( {
+        activeTab = Tagesmenues
+        , currentDay = (0 |> Date.fromTime |> Date.dayOfWeek)
+        , tagesmenueViewModel = {
+        }
+        , tagesmenueData = NotAsked
+        , angeboteViewModel = {}
+        , angeboteData = NotAsked
+    },
+    -- TODO: Task starten, um currentDate zu bestimmen 
+    Task.perform CurrentDateReceived Date.now )
 
 
 
@@ -22,11 +64,17 @@ init =
 
 type Msg
     = NoOp
+    | CurrentDateReceived Date.Date
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        NoOp ->
+            ( model, Cmd.none )
+                
+        CurrentDateReceived date ->
+            ( { model | currentDay = date |> Date.dayOfWeek }, Cmd.none )
 
 
 

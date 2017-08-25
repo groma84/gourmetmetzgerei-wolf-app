@@ -9,7 +9,7 @@ open Suave.Operators
 open Suave.Filters
 open Suave.Writers // setHeader
 
-open Microsoft.FSharpLu.Json.Default
+open Microsoft.FSharpLu.Json.Compact
 
 open System
 open System.Net

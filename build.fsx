@@ -126,7 +126,8 @@ Target "CopyDeploy" (fun _ ->
 
 Target "CopyClientDeploy" (fun _ ->
     printfn "*** Copying client to deployment directory ***"
-    // TODO
+    let builtClient = clientDir + "/build"
+    CopyDir deployDir builtClient all
 )
 
 Target "UploadToAzure" (fun _ ->
