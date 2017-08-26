@@ -38,7 +38,7 @@ module SuaveHost =
                     path "/tagesmenue" >=> warbler (fun req -> (Server.getTagesmenue config.Database.DatabaseFile config.Urls.Mittagsmenue.AbsoluteUri DateTime.Now |> serialize |> setOk))
                     path "/angebote" >=> warbler (fun req -> (Server.getAngebote config.Database.DatabaseFile config.Urls.Angebote.AbsoluteUri DateTime.Now |> serialize |> setOk))
                     
-                    Files.browseHome >=> setHeader "Cache-Control" "public, max-age=43200" // statische Files mit Caching für 30 Tage
+                    Files.browseHome >=> setHeader "Cache-Control" "public, max-age=86400" // statische Files mit Caching für 60 Tage
                 ]
 
         // Bootstrapping

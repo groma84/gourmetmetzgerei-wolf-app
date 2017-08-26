@@ -5,42 +5,12 @@ import Html.Attributes exposing (src)
 import Date
 import Task
 import RemoteData exposing (..)
+import RemoteData.Http
+import Json.Decode
 
----- MODEL ----
-type Tab  
-    = Tagesmenues
-    | Angebote
-    | Impressum
-
-type alias TagesmenueViewModel = 
-    {
-    }
-
-type alias Tagesmenue =
-    {
-
-    }
-
-type alias AngeboteViewModel =
-    {
-
-    }
-
-type alias Angebot = 
-    {
-
-    }
-
-
-type alias Model =
-    {
-        activeTab : Tab
-        , currentDay : Date.Day
-        , tagesmenueViewModel : TagesmenueViewModel
-        , tagesmenueData : WebData (List Tagesmenue)
-        , angeboteViewModel : AngeboteViewModel
-        , angeboteData : WebData (List Angebot)
-    }
+import Types exposing (..)
+import Config
+import Json exposing (..)
 
 
 init : ( Model, Cmd Msg )
@@ -50,12 +20,16 @@ init =
         , currentDay = (0 |> Date.fromTime |> Date.dayOfWeek)
         , tagesmenueViewModel = {
         }
-        , tagesmenueData = NotAsked
+        , tagesmenues = NotAsked
         , angeboteViewModel = {}
-        , angeboteData = NotAsked
+        , angebotsgruppen = NotAsked
     },
-    -- TODO: Task starten, um currentDate zu bestimmen 
-    Task.perform CurrentDateReceived Date.now )
+    Cmd.batch [
+        Task.perform CurrentDateReceived Date.now 
+        , RemoteData.Http.get Config.tagesmenueUrl TagesmenuesReceived (Json.Decode.list decodeTagesmenue)
+        , RemoteData.Http.get Config.angeboteUrl AngebotsgruppenReceived (Json.Decode.list decodeAngebotsgruppe)
+    ]
+    )
 
 
 
@@ -65,6 +39,8 @@ init =
 type Msg
     = NoOp
     | CurrentDateReceived Date.Date
+    | TagesmenuesReceived (WebData (List Tagesmenue))
+    | AngebotsgruppenReceived (WebData (List Angebotsgruppe))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -75,6 +51,14 @@ update msg model =
                 
         CurrentDateReceived date ->
             ( { model | currentDay = date |> Date.dayOfWeek }, Cmd.none )
+        
+        TagesmenuesReceived received ->
+            ( { model | tagesmenues = received }, Cmd.none )
+
+        AngebotsgruppenReceived received ->
+            ( { model | angebotsgruppen = received }, Cmd.none )
+        
+
 
 
 
