@@ -1,12 +1,105 @@
 body {
   font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande', 'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
-  font-size: 30px;
+  font-size: 15px;
   margin: 0;
-  text-align: center;
-  color: #293c4b;
+	color: #111111;
+	/* Force scrollbar trick */
+	overflow-y:scroll
 }
 
-img {
-  margin: 20px 0;
-  max-width: 200px;
+.margin-auto {
+	margin: auto;
+}
+
+.main-color-1 {
+  color : #774F38;
+}
+.main-color-2 {
+  color : #E08E79;
+}
+.main-color-3 {
+  color : #F1D4AF;
+}
+.main-color-4 {
+  color : #ECE5CE;
+}
+.main-color-5 {
+  color : #C5E0DC;
+}
+
+.border-color-1 {
+	border-color: #774F38;
+}
+
+.bg-color-4 {
+	background-color: #ECE5CE;
+}
+
+.justify-evenly {
+      -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+      justify-content: space-evenly;
+}
+
+/* loading spinner */
+.cssload-container{
+	display: block;
+	margin:131px auto;
+	width:263px;
+}
+
+.cssload-loading i{
+	width: 131px;
+	height: 131px;
+	display: inline-block;
+	background: rgb(119,79,56);
+	border-radius: 50%;
+}
+.cssload-loading i:nth-child(1){
+	animation:cssload-loading-ani1 1.15s ease-in-out infinite;
+		-o-animation:cssload-loading-ani1 1.15s ease-in-out infinite;
+		-ms-animation:cssload-loading-ani1 1.15s ease-in-out infinite;
+		-webkit-animation:cssload-loading-ani1 1.15s ease-in-out infinite;
+		-moz-animation:cssload-loading-ani1 1.15s ease-in-out infinite;
+
+}
+.cssload-loading i:nth-child(2){
+	background: rgb(241,212,175);
+	margin-left: -26px;
+	animation:cssload-loading-ani1 1.15s ease-in-out 0.58s infinite;
+		-o-animation:cssload-loading-ani1 1.15s ease-in-out 0.58s infinite;
+		-ms-animation:cssload-loading-ani1 1.15s ease-in-out 0.58s infinite;
+		-webkit-animation:cssload-loading-ani1 1.15s ease-in-out 0.58s infinite;
+		-moz-animation:cssload-loading-ani1 1.15s ease-in-out 0.58s infinite;
+}
+
+
+@keyframes cssload-loading-ani1{
+	70%{
+		transform:scale(0.5);
+	}
+}
+
+@-o-keyframes cssload-loading-ani1{
+	70%{
+		-o-transform:scale(0.5);
+	}
+}
+
+@-ms-keyframes cssload-loading-ani1{
+	70%{
+		-ms-transform:scale(0.5);
+	}
+}
+
+@-webkit-keyframes cssload-loading-ani1{
+	70%{
+		-webkit-transform:scale(0.5);
+	}
+}
+
+@-moz-keyframes cssload-loading-ani1{
+	70%{
+		-moz-transform:scale(0.5);
+	}
 }

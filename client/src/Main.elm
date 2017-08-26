@@ -8,11 +8,16 @@ import Task
 import RemoteData exposing (..)
 import RemoteData.Http
 import Json.Decode
+import Tachyons exposing (classes)
+import Tachyons.Classes exposing (..)
+import MyTachyons exposing (..)
 import Types exposing (..)
 import Config
 import Json exposing (..)
 import Update exposing (..)
 import ViewImpressum exposing (view)
+import ViewAngebote exposing (view)
+import ViewTagesmenues exposing (view)
 
 
 init : ( Model, Cmd Msg )
@@ -33,9 +38,11 @@ init =
     )
 
 
-
----- UPDATE ----
----- VIEW ----
+type alias TabClasses =
+    { tagesmenuesClasses : List String
+    , angeboteClasses : List String
+    , impressumClasses : List String
+    }
 
 
 view : Model -> Html Msg
@@ -44,24 +51,52 @@ view model =
         visibleContent =
             case model.activeTab of
                 Tagesmenues ->
-                    div [ id "tagesmenues" ] [ text "T" ]
+                    ViewTagesmenues.view model.tagesmenues
 
                 Angebote ->
-                    div [ id "angebote" ] [ text "A" ]
+                    ViewAngebote.view model.angebotsgruppen
 
                 Impressum ->
                     ViewImpressum.view
+
+        inactiveTabClasses =
+            [ ttc, button_reset, pointer ]
+
+        activeTabClasses =
+            [ ttc, button_reset, pointer ]
+
+        tabClasses =
+            case model.activeTab of
+                Tagesmenues ->
+                    { tagesmenuesClasses = activeTabClasses
+                    , angeboteClasses = inactiveTabClasses
+                    , impressumClasses = inactiveTabClasses
+                    }
+
+                Angebote ->
+                    { tagesmenuesClasses = inactiveTabClasses
+                    , angeboteClasses = activeTabClasses
+                    , impressumClasses = inactiveTabClasses
+                    }
+
+                Impressum ->
+                    { tagesmenuesClasses = inactiveTabClasses
+                    , angeboteClasses = inactiveTabClasses
+                    , impressumClasses = activeTabClasses
+                    }
     in
-        div []
-            [ nav [ id "navigation" ]
-                [ ul []
-                    [ button [ type_ "button", onClick (SwitchTo Tagesmenues) ] [ text "Tagesmenü" ]
-                    , button [ type_ "button", onClick (SwitchTo Angebote) ] [ text "Angebote" ]
-                    , button [ type_ "button", onClick (SwitchTo Impressum) ] [ text "Impressum" ]
+        div [ classes [ flex, flex_column, mw6, mauto ] ]
+            [ div []
+                [ nav [ id "navigation" ]
+                    [ ul [ classes [ bgc4, bb, bt_0, bl_0, br_0, bc1, pa0, flex, justify_evenly ] ]
+                        [ button [ type_ "button", onClick (SwitchTo Tagesmenues), classes tabClasses.tagesmenuesClasses ] [ text "Tagesmenü" ]
+                        , button [ type_ "button", onClick (SwitchTo Angebote), classes tabClasses.angeboteClasses ] [ text "Angebote" ]
+                        , button [ type_ "button", onClick (SwitchTo Impressum), classes tabClasses.impressumClasses ] [ text "Impressum" ]
+                        ]
                     ]
-                ]
-            , section [ id "content" ]
-                [ visibleContent
+                , section [ id "content" ]
+                    [ visibleContent
+                    ]
                 ]
             ]
 

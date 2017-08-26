@@ -95,12 +95,35 @@ Target "BuildTests" (fun _ ->
     |> Log "MSBuild Output: "
 )
 
-Target "BuildClient" (fun _ ->
+Target "PrepareClientDeployPre" (fun _ ->
+    printfn "Copying production config to client dir:"
+    let filename = "Config_prod.elm"
+    let src = clientDir + filename
+    let target = clientDir + "src/" + "Config.elm"
+    CopyFile target src
+)
+
+Target "PrepareClientDeployPost" (fun _ ->
+    printfn "Copying development config back to client dir:"
+    let filename = "Config_dev.elm"
+    let src = clientDir + filename
+    let target = clientDir + "src/" + "Config.elm"
+    CopyFile target src
+)
+
+let buildClientCore ()=
     printfn "Yarn version:"
     run yarnTool "--version" clientDir
     //run yarnTool "install" clientDir
     printfn "Running elm-app to build the Elm app:"
     run elmAppTool "build" clientDir
+
+Target "BuildClient" (fun _ ->
+    buildClientCore ()
+)
+
+Target "BuildClientLocal" (fun _ ->
+    buildClientCore ()
 )
 
 Target "RunTests" (fun _ ->
@@ -189,7 +212,7 @@ Target "LocalBuild" (fun _ ->
 "Clean"
     ==> "BuildLocal"
     ==> "CopyLocal"
-    ==> "BuildClient"    
+    ==> "BuildClientLocal"    
     ==> "CopyClientLocal"
     ==> "LocalBuild"
 
@@ -198,8 +221,10 @@ Target "LocalBuild" (fun _ ->
     ==> "BuildDeploy"
     ==> "CopyDeploy"
     //==> "RunTests"
+    ==> "PrepareClientDeployPre"    
     ==> "BuildClient"    
     ==> "CopyClientDeploy"
+    ==> "PrepareClientDeployPost"    
     ==> "UploadToAzure"
     ==> "Deploy"
 
