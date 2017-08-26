@@ -130,6 +130,12 @@ Target "CopyClientDeploy" (fun _ ->
     CopyDir deployDir builtClient all
 )
 
+Target "CopyClientLocal" (fun _ ->
+    printfn "*** Copying client to local build directory ***"
+    let builtClient = clientDir + "/build"
+    CopyDir buildDir builtClient all
+)
+
 Target "UploadToAzure" (fun _ ->
     printfn "*** Uploading to Azure ***"
     
@@ -176,11 +182,16 @@ Target "UploadToAzure" (fun _ ->
 Target "Deploy" (fun _ ->
     printfn "*** Finished deployment ***"
 )
-
+Target "LocalBuild" (fun _ ->
+    printfn "*** Finished local build ***"
+)
 // Build order
 "Clean"
     ==> "BuildLocal"
     ==> "CopyLocal"
+    ==> "BuildClient"    
+    ==> "CopyClientLocal"
+    ==> "LocalBuild"
 
 // Set up dependencies
 "Clean"
@@ -192,5 +203,5 @@ Target "Deploy" (fun _ ->
     ==> "UploadToAzure"
     ==> "Deploy"
 
-RunTargetOrDefault "CopyLocal"
+RunTargetOrDefault "LocalBuild"
 //RunTargetOrDefault "Deploy"
