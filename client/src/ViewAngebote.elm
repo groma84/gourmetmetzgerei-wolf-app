@@ -37,7 +37,7 @@ view angebotsgruppen =
                         einAngebot angebot =
                             li [ classes [ striped__light_gray, mb2 ] ]
                                 [ span [ classes [ dib, w_70, pa1 ] ] [ text angebot.bezeichnung ]
-                                , span [ classes [ dib, w_25, pa1, ml2, v_top ] ] [ text ((angebot.preis |> formatN) ++ " € für " ++ (angebot.menge |> toString) ++ "gr.") ]
+                                , span [ classes [ dib, w_25, pa1, ml2_ns, v_top ] ] [ text ((angebot.preis |> formatN) ++ " € für " ++ (angebot.menge |> toString) ++ "gr.") ]
                                 ]
 
                         eineGruppe grp =

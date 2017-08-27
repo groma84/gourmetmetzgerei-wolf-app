@@ -3,9 +3,9 @@ module Config exposing (..)
 
 tagesmenueUrl : String
 tagesmenueUrl =
-    "http://localhost:3000/tagesmenue"
+    "http://gourmetmetzgerei-wolf-app.azurewebsites.net/tagesmenue"
 
 
 angeboteUrl : String
 angeboteUrl =
-    "http://localhost:3000/angebote"
+    "http://gourmetmetzgerei-wolf-app.azurewebsites.net/angebote"
