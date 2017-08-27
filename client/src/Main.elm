@@ -60,10 +60,10 @@ view model =
                     ViewImpressum.view
 
         inactiveTabClasses =
-            [ ttc, button_reset, pointer ]
+            [ bn, lh_copy, button_reset, pointer, w_third ]
 
         activeTabClasses =
-            [ ttc, button_reset, pointer ]
+            [ ttu, bn, lh_copy, button_reset, pointer, w_third ]
 
         tabClasses =
             case model.activeTab of
@@ -85,13 +85,13 @@ view model =
                     , impressumClasses = activeTabClasses
                     }
     in
-        div [ classes [ flex, flex_column, mw6, mauto ] ]
+        div [ classes [ flex, flex_column, mw6, mauto, sans_serif, f6, f5_ns ] ]
             [ div []
                 [ nav [ id "navigation" ]
-                    [ ul [ classes [ bgc4, bb, bt_0, bl_0, br_0, bc1, pa0, flex, justify_evenly ] ]
-                        [ button [ type_ "button", onClick (SwitchTo Tagesmenues), classes tabClasses.tagesmenuesClasses ] [ text "Tagesmenü" ]
-                        , button [ type_ "button", onClick (SwitchTo Angebote), classes tabClasses.angeboteClasses ] [ text "Angebote" ]
-                        , button [ type_ "button", onClick (SwitchTo Impressum), classes tabClasses.impressumClasses ] [ text "Impressum" ]
+                    [ ul [ classes [ bb, bt_0, bl_0, br_0, bc1, pa0, flex, justify_evenly ] ]
+                        [ button [ type_ "button", onClick (SwitchTo Tagesmenues), classes (bgc2 :: tabClasses.tagesmenuesClasses) ] [ text "Tagesmenü" ]
+                        , button [ type_ "button", onClick (SwitchTo Angebote), classes (bgc3 :: tabClasses.angeboteClasses) ] [ text "Angebote" ]
+                        , button [ type_ "button", onClick (SwitchTo Impressum), classes (bgc4 :: tabClasses.impressumClasses) ] [ text "Impressum" ]
                         ]
                     ]
                 , section [ id "content" ]

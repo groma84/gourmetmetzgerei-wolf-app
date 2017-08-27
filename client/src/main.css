@@ -1,6 +1,4 @@
 body {
-  font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande', 'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
-  font-size: 15px;
   margin: 0;
 	color: #111111;
 	/* Force scrollbar trick */
@@ -31,8 +29,20 @@ body {
 	border-color: #774F38;
 }
 
+.bg-color-1 {
+	background-color: #774F38;
+}
+.bg-color-2 {
+	background-color: #E08E79;
+}
+.bg-color-3 {
+	background-color: #F1D4AF;
+}
 .bg-color-4 {
 	background-color: #ECE5CE;
+}
+.bg-color-5 {
+	background-color: #C5E0DC;
 }
 
 .justify-evenly {

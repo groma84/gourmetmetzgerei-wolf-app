@@ -101,14 +101,16 @@ Target "PrepareClientDeployPre" (fun _ ->
     let src = clientDir + filename
     let target = clientDir + "src/" + "Config.elm"
     CopyFile target src
+    System.IO.File.SetLastWriteTimeUtc(target, DateTime.UtcNow)
 )
 
-Target "PrepareClientDeployPost" (fun _ ->
+Target "RestoreDevClientConfig" (fun _ ->
     printfn "Copying development config back to client dir:"
     let filename = "Config_dev.elm"
     let src = clientDir + filename
     let target = clientDir + "src/" + "Config.elm"
     CopyFile target src
+    System.IO.File.SetLastWriteTimeUtc(target, DateTime.UtcNow)
 )
 
 let buildClientCore ()=
@@ -212,6 +214,7 @@ Target "LocalBuild" (fun _ ->
 "Clean"
     ==> "BuildLocal"
     ==> "CopyLocal"
+    ==> "RestoreDevClientConfig"
     ==> "BuildClientLocal"    
     ==> "CopyClientLocal"
     ==> "LocalBuild"
@@ -224,7 +227,6 @@ Target "LocalBuild" (fun _ ->
     ==> "PrepareClientDeployPre"    
     ==> "BuildClient"    
     ==> "CopyClientDeploy"
-    ==> "PrepareClientDeployPost"    
     ==> "UploadToAzure"
     ==> "Deploy"
 
