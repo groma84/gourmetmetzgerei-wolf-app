@@ -85,10 +85,10 @@ view model =
                     , impressumClasses = activeTabClasses
                     }
     in
-        div [ classes [ flex, flex_column, mw6, mauto, sans_serif, f6, f5_ns ] ]
+        div [ classes [ flex, flex_column, mw6, mauto, sans_serif, f7, f5_ns ] ]
             [ div []
-                [ nav [ id "navigation" ]
-                    [ ul [ classes [ bb, bt_0, bl_0, br_0, bc1, pa0, flex, justify_evenly ] ]
+                [ nav [ id "navigation", classes [] ]
+                    [ ul [ classes [ bb, bt_0, bl_0, br_0, bc1, pa0, ma0, flex, justify_evenly ] ]
                         [ button [ type_ "button", onClick (SwitchTo Tagesmenues), classes (bgc2 :: tabClasses.tagesmenuesClasses) ] [ text "Tagesmenü" ]
                         , button [ type_ "button", onClick (SwitchTo Angebote), classes (bgc3 :: tabClasses.angeboteClasses) ] [ text "Angebote" ]
                         , button [ type_ "button", onClick (SwitchTo Impressum), classes (bgc4 :: tabClasses.impressumClasses) ] [ text "Impressum" ]

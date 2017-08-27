@@ -35,16 +35,16 @@ view tagesmenues =
                     let
                         einGericht gericht =
                             li [ classes [ mb2 ] ]
-                                [ span [ classes [ dib, w_80 ] ] [ text gericht.gericht ]
-                                , span [ classes [ dib, w_10, ml2, v_top ] ] [ text ((gericht.preis |> formatN) ++ " €") ]
+                                [ span [ classes [ dib, w_80, pa1 ] ] [ text gericht.gericht ]
+                                , span [ classes [ dib, w_10, pa1, ml2, v_top ] ] [ text ((gericht.preis |> formatN) ++ " €") ]
                                 ]
 
                         einTag menue =
                             li [ classes [ striped__light_gray, pa2 ] ]
-                                [ Html.h2 [ classes [ ma1 ] ] [ text menue.wochentag ]
-                                , ul [ classes [ list ] ] (List.map einGericht menue.gerichte)
+                                [ Html.h2 [ classes [ ma1, f6, f3_ns ] ] [ text menue.wochentag ]
+                                , ul [ classes [ list, pl3 ] ] (List.map einGericht menue.gerichte)
                                 ]
                     in
-                        ol [ classes [ list, pa0 ] ] (List.map einTag s)
+                        ol [ classes [ list, pa0, ma0 ] ] (List.map einTag s)
     in
         div [ id "tagesmenues", classes [] ] [ content ]

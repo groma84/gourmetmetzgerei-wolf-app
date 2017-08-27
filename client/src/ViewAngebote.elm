@@ -4,6 +4,7 @@ import Html exposing (Html, text, div, h1, h2, h3, span, section, p, ol, ul, li,
 import Html.Attributes exposing (id, href, type_, value, readonly)
 import Tachyons exposing (classes)
 import Tachyons.Classes exposing (..)
+import MyTachyons exposing (..)
 import RemoteData exposing (..)
 import FormatNumber exposing (format)
 import Update exposing (..)
@@ -34,17 +35,17 @@ view angebotsgruppen =
                 Success s ->
                     let
                         einAngebot angebot =
-                            li []
-                                [ span [] [ text angebot.bezeichnung ]
-                                , span [] [ text ((angebot.preis |> formatN) ++ " € für " ++ (angebot.menge |> toString) ++ "gr.") ]
+                            li [ classes [ striped__light_gray, mb2 ] ]
+                                [ span [ classes [ dib, w_70, pa1 ] ] [ text angebot.bezeichnung ]
+                                , span [ classes [ dib, w_25, pa1, ml2, v_top ] ] [ text ((angebot.preis |> formatN) ++ " € für " ++ (angebot.menge |> toString) ++ "gr.") ]
                                 ]
 
                         eineGruppe grp =
-                            li []
-                                [ Html.h2 [] [ text grp.gruppe ]
-                                , ul [] (List.map einAngebot grp.angebote)
+                            li [ classes [ pa2, bb, bt_0, bl_0, br_0, bc1 ] ]
+                                [ Html.h2 [ classes [ ma1, f6, f3_ns ] ] [ text grp.gruppe ]
+                                , ul [ classes [ list, pl3 ] ] (List.map einAngebot grp.angebote)
                                 ]
                     in
-                        ol [] (List.map eineGruppe s)
+                        ol [ classes [ list, pa0, ma0 ] ] (List.map eineGruppe s)
     in
         div [ id "angebote" ] [ content ]
