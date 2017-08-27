@@ -18,12 +18,10 @@ module Offers =
     
 
 
-    let load connectionString yearAndWeek =
+    let load (connectionString : string) yearAndWeek =
         let fromJson json : Angebot [] = 
             json
             |> deserialize<Angebot []>
-
-        printfn "Offers -> load: ConnectionString: %s" connectionString
 
         let ctx = SqlData.GetDataContext connectionString
 

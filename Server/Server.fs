@@ -8,14 +8,12 @@ module Server =
     let loadFromDbOrDownloadAndParseIfNecessary connectionString url date (loadFunction : YearAndWeek -> 'a option * DataOrigin) (parseFunction : string -> 'a option * DataOrigin) (saveFunction : YearAndWeek -> 'a -> 'a)  =
         let downloadAndParseIfNecessary weekAndYear =
             let storeInDb dataToStore =
-                printfn "Storing new data in database: %A" dataToStore
                 match dataToStore with
                     | Some data, _ -> Some (saveFunction weekAndYear data)
                     | _ -> Option<'a>.None
                 |> ignore
             
             let getViaDownloadAndStoreInDatabase =        
-                printfn "No existing data found, downloading from '%s'" url
                 let parsedData = Downloader.download url
                                 |> parseFunction
                 storeInDb parsedData
@@ -24,7 +22,6 @@ module Server =
             getViaDownloadAndStoreInDatabase
 
         let weekAndYear = DateHelper.getWeekAndYear date
-        printfn "Loading data for year %i and week %i" weekAndYear.Year weekAndYear.Week
         let fromDb = loadFunction weekAndYear
         let data, _ = match fromDb with
                         | (Some x, _) -> fromDb

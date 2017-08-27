@@ -18,12 +18,10 @@ module Menus =
     
 
 
-    let load connectionString yearAndWeek =
+    let load (connectionString : string) yearAndWeek =
         let fromJsonToTagesmenu json : Tagesmenu [] = 
             json
             |> deserialize<Tagesmenu []>
-
-        printfn "loadMenus ConnectionString: %s" connectionString
 
         let ctx = SqlData.GetDataContext connectionString
 
