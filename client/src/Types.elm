@@ -1,6 +1,5 @@
 module Types exposing (..)
 
-import Date
 import RemoteData exposing (WebData)
 
 
@@ -8,10 +7,6 @@ type Tab
     = Tagesmenues
     | Angebote
     | Impressum
-
-
-type alias TagesmenueViewModel =
-    {}
 
 
 type alias Tagesmenue =
@@ -24,10 +19,6 @@ type alias Gericht =
     { gericht : String
     , preis : Float
     }
-
-
-type alias AngeboteViewModel =
-    {}
 
 
 type alias Angebotsgruppe =
@@ -45,9 +36,6 @@ type alias Angebot =
 
 type alias Model =
     { activeTab : Tab
-    , currentDay : Date.Day
-    , tagesmenueViewModel : TagesmenueViewModel
     , tagesmenues : WebData (List Tagesmenue)
-    , angeboteViewModel : AngeboteViewModel
     , angebotsgruppen : WebData (List Angebotsgruppe)
     }

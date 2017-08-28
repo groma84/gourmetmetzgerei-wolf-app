@@ -9,8 +9,8 @@ import Types exposing (..)
 decodeGericht : Json.Decode.Decoder Gericht
 decodeGericht =
     Json.Decode.Pipeline.decode Gericht
-        |> Json.Decode.Pipeline.required "Gericht" (Json.Decode.string)
-        |> Json.Decode.Pipeline.required "Preis" (Json.Decode.float)
+        |> Json.Decode.Pipeline.required "Gericht" Json.Decode.string
+        |> Json.Decode.Pipeline.required "Preis" Json.Decode.float
 
 
 encodeGericht : Gericht -> Json.Encode.Value
@@ -24,7 +24,7 @@ encodeGericht record =
 decodeTagesmenue : Json.Decode.Decoder Tagesmenue
 decodeTagesmenue =
     Json.Decode.Pipeline.decode Tagesmenue
-        |> Json.Decode.Pipeline.required "Wochentag" (Json.Decode.string)
+        |> Json.Decode.Pipeline.required "Wochentag" Json.Decode.string
         |> Json.Decode.Pipeline.required "Gerichte" (Json.Decode.list decodeGericht)
 
 
@@ -39,9 +39,9 @@ encodeTagesmenue record =
 decodeAngebot : Json.Decode.Decoder Angebot
 decodeAngebot =
     Json.Decode.Pipeline.decode Angebot
-        |> Json.Decode.Pipeline.required "Preis" (Json.Decode.float)
-        |> Json.Decode.Pipeline.required "Menge" (Json.Decode.int)
-        |> Json.Decode.Pipeline.required "Bezeichnung" (Json.Decode.string)
+        |> Json.Decode.Pipeline.required "Preis" Json.Decode.float
+        |> Json.Decode.Pipeline.required "Menge" Json.Decode.int
+        |> Json.Decode.Pipeline.required "Bezeichnung" Json.Decode.string
 
 
 encodeAngebot : Angebot -> Json.Encode.Value
@@ -56,7 +56,7 @@ encodeAngebot record =
 decodeAngebotsgruppe : Json.Decode.Decoder Angebotsgruppe
 decodeAngebotsgruppe =
     Json.Decode.Pipeline.decode Angebotsgruppe
-        |> Json.Decode.Pipeline.required "Gruppe" (Json.Decode.string)
+        |> Json.Decode.Pipeline.required "Gruppe" Json.Decode.string
         |> Json.Decode.Pipeline.required "Eintraege" (Json.Decode.list decodeAngebot)
 
 

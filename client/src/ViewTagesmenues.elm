@@ -1,7 +1,7 @@
-module ViewTagesmenues exposing (..)
+module ViewTagesmenues exposing (view)
 
-import Html exposing (Html, text, div, h1, h2, h3, span, section, p, ol, ul, li, a, input)
-import Html.Attributes exposing (id, href, type_, value, readonly)
+import Html exposing (Html, text, div, span, ol, ul, li)
+import Html.Attributes exposing (id)
 import Tachyons exposing (classes)
 import Tachyons.Classes exposing (..)
 import RemoteData exposing (..)

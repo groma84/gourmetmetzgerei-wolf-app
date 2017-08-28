@@ -39,6 +39,7 @@ let platformTool tool winTool =
     |> function Some t -> t | _ -> failwithf "%s not found" tool
 
 let yarnTool = platformTool "yarn" "yarn.cmd"
+let elmAnalyseTool = platformTool "elm-analyse" "elm-analyse.cmd"
 let elmAppTool = platformTool "elm-app" "elm-app.cmd"
 let winScpExePath = "./packages/WinSCP/content/WinSCP.exe"
 
@@ -111,6 +112,11 @@ Target "RestoreDevClientConfig" (fun _ ->
     let target = clientDir + "src/" + "Config.elm"
     CopyFile target src
     System.IO.File.SetLastWriteTimeUtc(target, DateTime.UtcNow)
+)
+
+Target "RunElmAnalyse" (fun _ ->
+    run elmAnalyseTool "" clientDir
+    
 )
 
 let buildClientCore ()=
@@ -215,6 +221,7 @@ Target "LocalBuild" (fun _ ->
     ==> "BuildLocal"
     ==> "CopyLocal"
     ==> "RestoreDevClientConfig"
+    //==> "RunElmAnalyse"    
     ==> "BuildClientLocal"    
     ==> "CopyClientLocal"
     ==> "LocalBuild"

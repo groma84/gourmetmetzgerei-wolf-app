@@ -1,6 +1,6 @@
 module ViewImpressum exposing (..)
 
-import Html exposing (Html, text, div, h1, h2, h3, span, section, p, ol, li, a, input)
+import Html exposing (Html, text, div, span, section, p, ol, li, a, input)
 import Html.Attributes exposing (id, href, type_, value, readonly)
 import Tachyons exposing (classes)
 import Tachyons.Classes exposing (..)
@@ -57,10 +57,10 @@ view =
                 ]
             , section []
                 [ Html.h2 [] [ text "Datenschutz" ]
-                , span [] [ text "Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre\npersonenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie\ndieser Datenschutzerklärung.\nDie Nutzung unserer Webseite ist in der Regel ohne Angabe personenbezogener Daten möglich. Soweit\nauf unseren Seiten personenbezogene Daten (beispielsweise Name, Anschrift oder E-Mail-Adressen)\nerhoben werden, erfolgt dies, soweit möglich, stets auf freiwilliger Basis. Diese Daten werden ohne Ihre\nausdrückliche Zustimmung nicht an Dritte weitergegeben.\nWir weisen darauf hin, dass die Datenübertragung im Internet (z.B. bei der Kommunikation per E-Mail)\nSicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht\nmöglich." ]
+                , span [] [ text "Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung. Die Nutzung unserer Webseite ist in der Regel ohne Angabe personenbezogener Daten möglich. Soweit auf unseren Seiten personenbezogene Daten (beispielsweise Name, Anschrift oder E-Mail-Adressen) erhoben werden, erfolgt dies, soweit möglich, stets auf freiwilliger Basis. Diese Daten werden ohne Ihre ausdrückliche Zustimmung nicht an Dritte weitergegeben. Wir weisen darauf hin, dass die Datenübertragung im Internet (z.B. bei der Kommunikation per E-Mail) Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht möglich." ]
                 , Html.h2 [] [ text "Server-Log-Files" ]
-                , span [] [ text "Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log\nFiles, die Ihr Browser automatisch an uns übermittelt. Dies sind:\nBrowsertyp und Browserversion, \nverwendetes Betriebssystem, \nReferrer URL, \nHostname des zugreifenden Rechners, \nUhrzeit der Serveranfrage.\nDiese Daten sind nicht bestimmten Personen zuordenbar. Eine Zusammenführung dieser Daten mit\nanderen Datenquellen wird nicht vorgenommen. Wir behalten uns vor, diese Daten nachträglich zu \nprüfen, wenn uns konkrete Anhaltspunkte für eine rechtswidrige Nutzung bekannt werden.\n" ]
+                , span [] [ text "Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log Files, die Ihr Browser automatisch an uns übermittelt. Dies sind: Browsertyp und Browserversion, verwendetes Betriebssystem, Referrer URL, Hostname des zugreifenden Rechners, Uhrzeit der Serveranfrage. Diese Daten sind nicht bestimmten Personen zuordenbar. Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen. Wir behalten uns vor, diese Daten nachträglich zu prüfen, wenn uns konkrete Anhaltspunkte für eine rechtswidrige Nutzung bekannt werden." ]
                 , Html.h2 [] [ text "Widerspruch Werbe-Mails" ]
-                , span [] [ text "Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten zur Übersendung von\nnicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit widersprochen. Die\nBetreiber der Seiten behalten sich ausdrücklich rechtliche Schritte im Falle der unverlangten Zusendung\nvon Werbeinformationen, etwa durch Spam-E-Mails, vor." ]
+                , span [] [ text "Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten zur Übersendung von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit widersprochen. Die Betreiber der Seiten behalten sich ausdrücklich rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-E-Mails, vor." ]
                 ]
             ]

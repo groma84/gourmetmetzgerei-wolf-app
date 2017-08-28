@@ -2,7 +2,7 @@ echo "Bootstrapping paket..."
 .paket\paket.bootstrapper.exe
 
 echo "Install global client stuff with yarn..."
-call yarn global add elm create-elm-app elm-format
+call yarn global add elm create-elm-app elm-format elm-analyse
 
 echo "Installing Elm packages..."
 cd client

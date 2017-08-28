@@ -1,7 +1,7 @@
 module ViewAngebote exposing (..)
 
-import Html exposing (Html, text, div, h1, h2, h3, span, section, p, ol, ul, li, a, input)
-import Html.Attributes exposing (id, href, type_, value, readonly)
+import Html exposing (Html, text, div, span, ol, ul, li)
+import Html.Attributes exposing (id)
 import Tachyons exposing (classes)
 import Tachyons.Classes exposing (..)
 import MyTachyons exposing (..)
@@ -35,10 +35,14 @@ view angebotsgruppen =
                 Success s ->
                     let
                         einAngebot angebot =
-                            li [ classes [ striped__light_gray, mb2 ] ]
-                                [ span [ classes [ dib, w_70, pa1 ] ] [ text angebot.bezeichnung ]
-                                , span [ classes [ dib, w_25, pa1, ml2_ns, v_top ] ] [ text ((angebot.preis |> formatN) ++ " € für " ++ (angebot.menge |> toString) ++ "gr.") ]
-                                ]
+                            let
+                                txt =
+                                    (angebot.preis |> formatN) ++ " € für " ++ (angebot.menge |> toString) ++ "gr."
+                            in
+                                li [ classes [ striped__light_gray, mb2 ] ]
+                                    [ span [ classes [ dib, w_70, pa1 ] ] [ text angebot.bezeichnung ]
+                                    , span [ classes [ dib, w_25, pa1, ml2_ns, v_top ] ] [ text txt ]
+                                    ]
 
                         eineGruppe grp =
                             li [ classes [ pa2, bb, bt_0, bl_0, br_0, bc1 ] ]

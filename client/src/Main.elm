@@ -1,10 +1,8 @@
 module Main exposing (..)
 
-import Html exposing (Html, button, text, div, nav, section, ul, li)
+import Html exposing (Html, button, text, div, nav, section, ul)
 import Html.Attributes exposing (id, type_)
 import Html.Events exposing (onClick)
-import Date
-import Task
 import RemoteData exposing (..)
 import RemoteData.Http
 import Json.Decode
@@ -15,24 +13,19 @@ import Types exposing (..)
 import Config
 import Json exposing (..)
 import Update exposing (..)
-import ViewImpressum exposing (view)
-import ViewAngebote exposing (view)
-import ViewTagesmenues exposing (view)
+import ViewImpressum
+import ViewAngebote
+import ViewTagesmenues
 
 
 init : ( Model, Cmd Msg )
 init =
     ( { activeTab = Tagesmenues
-      , currentDay = (0 |> Date.fromTime |> Date.dayOfWeek)
-      , tagesmenueViewModel =
-            {}
       , tagesmenues = NotAsked
-      , angeboteViewModel = {}
       , angebotsgruppen = NotAsked
       }
     , Cmd.batch
-        [ Task.perform CurrentDateReceived Date.now
-        , RemoteData.Http.get Config.tagesmenueUrl TagesmenuesReceived (Json.Decode.list decodeTagesmenue)
+        [ RemoteData.Http.get Config.tagesmenueUrl TagesmenuesReceived (Json.Decode.list decodeTagesmenue)
         , RemoteData.Http.get Config.angeboteUrl AngebotsgruppenReceived (Json.Decode.list decodeAngebotsgruppe)
         ]
     )
